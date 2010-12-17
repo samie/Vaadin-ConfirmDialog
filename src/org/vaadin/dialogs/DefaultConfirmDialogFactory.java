@@ -180,7 +180,7 @@ public class DefaultConfirmDialogFactory implements Factory {
 
         double[] res = new double[] { width + hmargin,
                 height + btnHeight + vmargin };
-        System.out.println(res[0] + "," + res[1]);
+//        System.out.println(res[0] + "," + res[1]);
         return res;
     }
 
