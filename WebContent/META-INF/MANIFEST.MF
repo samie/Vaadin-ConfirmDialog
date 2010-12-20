@@ -1,8 +1,6 @@
 Manifest-Version: 1.0
 Implementation-Title: ConfirmDialog
-Implementation-Version: 1.0.3
+Implementation-Version: 1.0.4
 Vaadin-Package-Version: 1
-Vaadin-Widgetsets: org.vaadin.dialogs.sample.widgetset.ConfirmdialogWi
- dgetset
 Class-Path: 
 
