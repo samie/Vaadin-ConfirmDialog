@@ -1,5 +1,7 @@
 package org.vaadin.dialogs;
 
+import java.io.Serializable;
+
 import com.vaadin.terminal.gwt.server.JsonPaintTarget;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
@@ -9,8 +11,8 @@ public class ConfirmDialog extends Window {
 
     private static final long serialVersionUID = -2363125714643244070L;
 
-    public interface Factory {
-        public ConfirmDialog create(String windowCaption, String message,
+    public interface Factory extends Serializable {
+        ConfirmDialog create(String windowCaption, String message,
                 String okTitle, String cancelTitle);
     }
 
@@ -62,7 +64,7 @@ public class ConfirmDialog extends Window {
      *
      * @return
      */
-    public static void setFactory(ConfirmDialog.Factory newFactory) {
+    public static void setFactory(final ConfirmDialog.Factory newFactory) {
         factoryInstance = newFactory;
     }
 
@@ -81,7 +83,7 @@ public class ConfirmDialog extends Window {
      * Show a modal ConfirmDialog in a window.
      *
      * @param parentWindow
-     * @param message
+     * @param messageLabel
      * @param listener
      * @return
      */
@@ -93,12 +95,12 @@ public class ConfirmDialog extends Window {
     /**
      * Show a modal ConfirmDialog in a window.
      *
-     * @param parentWindow
-     * @param windowCaption
-     * @param message
-     * @param okCaption
-     * @param cancelCaption
-     * @param listener
+     * @param parentWindow Main level window.
+     * @param windowCaption Caption for the confirmation dialog window.
+     * @param message Message to display as window content.
+     * @param okCaption Caption for the ok button.
+     * @param cancelCaption Caption for cancel button.
+     * @param listener Listener for dialog result.
      * @return
      */
     public static ConfirmDialog show(final Window parentWindow,
@@ -112,20 +114,20 @@ public class ConfirmDialog extends Window {
     }
 
     private Listener confirmListener = null;
-    private boolean confirmed = false;
-    private Label message = null;
-    private Button okButton = null;
-    private Button cancelButton = null;
+    private boolean isConfirmed = false;
+    private Label messageLabel = null;
+    private Button okBtn = null;
+    private Button cancelBtn = null;
     private String originalMessageText;
-    private int contentMode = CONTENT_TEXT_WITH_NEWLINES;
+    private int msgContentMode = CONTENT_TEXT_WITH_NEWLINES;
 
     /**
      * Show confirm dialog.
      *
      * @param listener
      */
-    public void show(final Window parentWindow, final Listener listener,
-            boolean modal) {
+    public final void show(final Window parentWindow, final Listener listener,
+            final boolean modal) {
         confirmListener = listener;
         center();
         setModal(modal);
@@ -137,77 +139,77 @@ public class ConfirmDialog extends Window {
      *
      * @return
      */
-    public boolean isConfirmed() {
-        return confirmed;
+    public final boolean isConfirmed() {
+        return isConfirmed;
     }
 
-    public Listener getListener() {
+    public final Listener getListener() {
         return confirmListener;
     }
 
-    protected void setOkButton(Button okButton) {
-        this.okButton = okButton;
+    protected final void setOkButton(final Button okButton) {
+        okBtn = okButton;
     }
 
-    public Button getOkButton() {
-        return okButton;
+    public final Button getOkButton() {
+        return okBtn;
     }
 
-    protected void setCancelButton(Button cancelButton) {
-        this.cancelButton = cancelButton;
+    protected final void setCancelButton(final Button cancelButton) {
+        cancelBtn = cancelButton;
     }
 
-    public Button getCancelButton() {
-        return cancelButton;
+    public final Button getCancelButton() {
+        return cancelBtn;
     }
 
-    protected void setMessageLabel(Label message) {
-        this.message = message;
+    protected final void setMessageLabel(final Label message) {
+        messageLabel = message;
     }
 
-    public void setMessage(String message) {
+    public final void setMessage(final String message) {
         originalMessageText = message;
-        this.message
-                .setValue(CONTENT_TEXT_WITH_NEWLINES == contentMode ? formatDialogMessage(message)
+        messageLabel
+                .setValue(CONTENT_TEXT_WITH_NEWLINES == msgContentMode ? formatDialogMessage(message)
                         : message);
     }
 
-    public String getMessage() {
+    public final String getMessage() {
         return originalMessageText;
     }
 
-    public int getContentMode() {
-        return contentMode;
+    public final int getContentMode() {
+        return msgContentMode;
     }
 
-    public void setContentMode(int contentMode) {
-        this.contentMode = contentMode;
-        message
+    public final void setContentMode(final int contentMode) {
+        msgContentMode = contentMode;
+        messageLabel
                 .setContentMode(contentMode == CONTENT_TEXT_WITH_NEWLINES ? CONTENT_TEXT
                         : contentMode);
-        message
+        messageLabel
                 .setValue(contentMode == CONTENT_TEXT_WITH_NEWLINES ? formatDialogMessage(originalMessageText)
                         : originalMessageText);
     }
 
     /**
-     * Format the message by maintaining text only.
+     * Format the messageLabel by maintaining text only.
      *
      * @param text
      * @return
      */
-    protected String formatDialogMessage(final String text) {
+    protected final String formatDialogMessage(final String text) {
         return JsonPaintTarget.escapeXML(text).replaceAll("\n", "<br />");
     }
 
     /**
-     * Set the confirmed state.
+     * Set the isConfirmed state.
      *
      * Note: this should only be called internally by the listeners.
      *
-     * @param confirmed
+     * @param isConfirmed
      */
-    protected void setConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
+    protected final void setConfirmed(final boolean confirmed) {
+        isConfirmed = confirmed;
     }
 }

@@ -8,12 +8,12 @@ import org.vaadin.dialogs.ConfirmDialog.Factory;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.themes.Reindeer;
 
@@ -28,6 +28,9 @@ import com.vaadin.ui.themes.Reindeer;
  *
  */
 public class DefaultConfirmDialogFactory implements Factory {
+
+    /** Generated serial UID. */
+    private static final long serialVersionUID = -5412321247707480466L;
 
     // System wide defaults
     protected static final String DEFAULT_CAPTION = "Confirm";
@@ -55,9 +58,14 @@ public class DefaultConfirmDialogFactory implements Factory {
             private static final long serialVersionUID = 1971800928047045825L;
 
             public void windowClose(CloseEvent ce) {
-                confirm.setConfirmed(false);
-                if (confirm.getListener() != null) {
-                    confirm.getListener().onClose(confirm);
+
+                // Only process if still enabled
+                if (confirm.isEnabled()) {
+                    confirm.setEnabled(false); // avoid double processing
+                    confirm.setConfirmed(false);
+                    if (confirm.getListener() != null) {
+                        confirm.getListener().onClose(confirm);
+                    }
                 }
             }
         });
@@ -117,21 +125,25 @@ public class DefaultConfirmDialogFactory implements Factory {
 
             public void buttonClick(ClickEvent event) {
                 // Copy the button date to window for passing through either
-                // "OK" or "CANCEL"
-                confirm.setConfirmed(event.getButton() == ok);
-                (confirm.getParent()).removeWindow(confirm);
+                // "OK" or "CANCEL". Only process id still enabled.
+                if (confirm.isEnabled()) {
+                    confirm.setEnabled(false); // Avoid double processing
 
-                // This has to be invoked as the window.close
-                // event is not fired when removed.
-                if (confirm.getListener() != null) {
-                    confirm.getListener().onClose(confirm);
+                    confirm.setConfirmed(event.getButton() == ok);
+                    (confirm.getParent()).removeWindow(confirm);
+
+                    // This has to be invoked as the window.close
+                    // event is not fired when removed.
+                    if (confirm.getListener() != null) {
+                        confirm.getListener().onClose(confirm);
+                    }
                 }
+
             }
 
         };
         cancel.addListener(cb);
         ok.addListener(cb);
-
 
         // Approximate the size of the dialog
         double[] dim = getDialogDimensions(message,
@@ -147,6 +159,7 @@ public class DefaultConfirmDialogFactory implements Factory {
      * Approximates the dialog dimensions based on its message length.
      *
      * @param message
+     *            Message string
      * @return
      */
     protected double[] getDialogDimensions(String message, int style) {
@@ -162,8 +175,8 @@ public class DefaultConfirmDialogFactory implements Factory {
             rows += count("\n", message);
         }
 
-//        System.out.println(message.length() + " = " + length + "em");
-//        System.out.println("Rows: " + (length / MAX_WIDTH) + " = " + rows);
+        // System.out.println(message.length() + " = " + length + "em");
+        // System.out.println("Rows: " + (length / MAX_WIDTH) + " = " + rows);
 
         // Obey maximum size
         double width = Math.min(MAX_WIDTH, length);
@@ -180,14 +193,17 @@ public class DefaultConfirmDialogFactory implements Factory {
 
         double[] res = new double[] { width + hmargin,
                 height + btnHeight + vmargin };
-//        System.out.println(res[0] + "," + res[1]);
+        // System.out.println(res[0] + "," + res[1]);
         return res;
     }
 
-    /**Count the number of needles within a haystack.
+    /**
+     * Count the number of needles within a haystack.
      *
      * @param needle
+     *            The string to search for.
      * @param haystack
+     *            The string to process.
      * @return
      */
     private static int count(final String needle, final String haystack) {
