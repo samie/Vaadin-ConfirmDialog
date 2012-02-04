@@ -33,7 +33,7 @@ public class ConfirmDialog extends Window {
      * @author Sami Ekblad
      *
      */
-    public interface Listener {
+    public interface Listener extends Serializable {
         void onClose(ConfirmDialog dialog);
     }
 
