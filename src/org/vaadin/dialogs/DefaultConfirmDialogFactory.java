@@ -1,5 +1,6 @@
 package org.vaadin.dialogs;
 
+import java.lang.reflect.Method;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -9,6 +10,7 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
@@ -130,7 +132,19 @@ public class DefaultConfirmDialogFactory implements Factory {
                     confirm.setEnabled(false); // Avoid double processing
 
                     confirm.setConfirmed(event.getButton() == ok);
-                    (confirm.getParent()).removeWindow(confirm);
+
+                    // We need to cast this way, because of the backward
+                    // compatibility issue in 6.4 series.
+                    Component parent = confirm.getParent();
+                    if (parent instanceof Window) {
+                        try {
+                            Method m = parent.getClass().getDeclaredMethod(
+                                    "removeWindow", Window.class);
+                            m.invoke(parent, confirm);
+                        } catch (Exception e) {
+                            throw new RuntimeException("Failed to remove confirmation dialof from the parent window.", e);
+                        }
+                    }
 
                     // This has to be invoked as the window.close
                     // event is not fired when removed.
