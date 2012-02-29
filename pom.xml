@@ -1,0 +1,70 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.vaadin.addon</groupId>
+  <artifactId>confirmdialog</artifactId>
+  <version>1.1.2-SNAPSHOT</version>
+  <name>ConfirmDialog</name>
+  <description>The ConfirmDialog add-on provides you a configurable way of requesting user 
+	confirmation for a button click or some other some operation. </description>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin</artifactId>
+			<version>6.5.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
+			<scope>test</scope>
+			<version>8.1.1.v20120215</version>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-firefox-driver</artifactId>
+			<version>2.19.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.9</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+	   <sourceDirectory>${basedir}/src</sourceDirectory>
+       <testSourceDirectory>${basedir}/test</testSourceDirectory>
+	
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<configuration>
+						<archive>
+							<index>true</index>
+							<manifest>
+								<addClasspath>true</addClasspath>
+								<!-- Implementation-Title and Implementation-Version come from the 
+									POM by default -->
+								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							</manifest>
+							<manifestEntries>
+								<!-- Package format version - do not change -->
+								<Vaadin-Package-Version>1</Vaadin-Package-Version>
+
+								<!-- Add-on specific fields to update -->
+
+								<!-- Implementation-Title and Implementation-Version come from the 
+									POM by default -->
+								<Implementation-Title>ConfirmDialog</Implementation-Title>
+							</manifestEntries>
+						</archive>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+	</build></project>
