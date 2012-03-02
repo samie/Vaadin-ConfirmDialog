@@ -1,0 +1,49 @@
+= ConfirmationDialog =
+
+Ever needed a present a confirmation dialog in a Vaadin application?
+
+Here is a way to do it nicely. The ConfirmDialog add-on provides you with a configurable way of requesting user confirmation for a button click or some other some operation. 
+
+Defaults like size calculation, keyboard bindings and styling are all there, but of course you can provide your own. Take a look at the demo application for sample code and use cases.
+
+Currently only two-way (yes,no) confirmation is supported. Vote for three-way (yes,no,cancel) if you need it. And for "monolog box" use the Vaadin's own showNotification method. 
+
+This is a server-side-only component, so no need to recompile the widgetset.
+
+== Usage of the add-on ==
+
+{{{
+
+private void addBasicExample() {
+	Button button = new Button("Basic");
+	button.setDebugId("basic");
+	button.addListener(new Button.ClickListener() {
+		public void buttonClick(ClickEvent event) {
+			// The quickest way to confirm
+			ConfirmDialog.show(getMainWindow(), "Are you sure?",
+			        new ConfirmDialog.Listener() {
+
+			            public void onClose(ConfirmDialog dialog) {
+			                if (dialog.isConfirmed()) {
+			                    // Confirmed to continue
+								// DO STUFF
+			                } else {
+			                    // User did not confirm
+								// CANCEL STUFF
+			                }
+			            }
+			        });
+		}
+	});
+
+}}}
+
+
+== Developing and building ==
+
+Project sources are hosted in github.com.
+
+Project is built with maven. Sources are directly in src directory, tests in test directory.
+
+ConfirmTestApplication has main method that launches itself into an embedded jetty. Selenium2 tests are run against it.
+
