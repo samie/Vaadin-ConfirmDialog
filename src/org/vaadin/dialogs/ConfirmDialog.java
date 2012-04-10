@@ -29,9 +29,9 @@ public class ConfirmDialog extends Window {
     /**
      * Listener for dialog close events. Implement and register an instance of
      * this interface to dialog to receive close events.
-     *
+     * 
      * @author Sami Ekblad
-     *
+     * 
      */
     public interface Listener extends Serializable {
         void onClose(ConfirmDialog dialog);
@@ -39,15 +39,15 @@ public class ConfirmDialog extends Window {
 
     /**
      * Default dialog factory.
-     *
+     * 
      */
     private static ConfirmDialog.Factory factoryInstance;
 
     /**
      * Get the ConfirmDialog.Factory used to create and configure the dialog.
-     *
+     * 
      * By default the {@link DefaultConfirmDialogFactory} is used.
-     *
+     * 
      * @return
      */
     public static ConfirmDialog.Factory getFactory() {
@@ -59,9 +59,9 @@ public class ConfirmDialog extends Window {
 
     /**
      * Set the ConfirmDialog.Factory used to create and configure the dialog.
-     *
+     * 
      * By default the {@link DefaultConfirmDialogFactory} is used.
-     *
+     * 
      * @return
      */
     public static void setFactory(final ConfirmDialog.Factory newFactory) {
@@ -70,7 +70,7 @@ public class ConfirmDialog extends Window {
 
     /**
      * Show a modal ConfirmDialog in a window.
-     *
+     * 
      * @param parentWindow
      * @param listener
      */
@@ -81,7 +81,7 @@ public class ConfirmDialog extends Window {
 
     /**
      * Show a modal ConfirmDialog in a window.
-     *
+     * 
      * @param parentWindow
      * @param messageLabel
      * @param listener
@@ -94,13 +94,19 @@ public class ConfirmDialog extends Window {
 
     /**
      * Show a modal ConfirmDialog in a window.
-     *
-     * @param parentWindow Main level window.
-     * @param windowCaption Caption for the confirmation dialog window.
-     * @param message Message to display as window content.
-     * @param okCaption Caption for the ok button.
-     * @param cancelCaption Caption for cancel button.
-     * @param listener Listener for dialog result.
+     * 
+     * @param parentWindow
+     *            Main level window.
+     * @param windowCaption
+     *            Caption for the confirmation dialog window.
+     * @param message
+     *            Message to display as window content.
+     * @param okCaption
+     *            Caption for the ok button.
+     * @param cancelCaption
+     *            Caption for cancel button.
+     * @param listener
+     *            Listener for dialog result.
      * @return
      */
     public static ConfirmDialog show(final Window parentWindow,
@@ -110,6 +116,39 @@ public class ConfirmDialog extends Window {
         ConfirmDialog d = getFactory().create(windowCaption, message,
                 okCaption, cancelCaption);
         d.show(parentWindow, listener, true);
+        return d;
+    }
+
+    /**
+     * Shows a modal ConfirmDialog in given window and executes Runnable if OK
+     * is chosen.
+     * 
+     * @param parentWindow
+     *            Main level window.
+     * @param windowCaption
+     *            Caption for the confirmation dialog window.
+     * @param message
+     *            Message to display as window content.
+     * @param okCaption
+     *            Caption for the ok button.
+     * @param cancelCaption
+     *            Caption for cancel button.
+     * @param r
+     *            Runnable to be run if confirmed
+     * @return
+     */
+    public static ConfirmDialog show(final Window parentWindow,
+            final String windowCaption, final String message,
+            final String okCaption, final String cancelCaption, final Runnable r) {
+        ConfirmDialog d = getFactory().create(windowCaption, message,
+                okCaption, cancelCaption);
+        d.show(parentWindow, new Listener() {
+            public void onClose(ConfirmDialog dialog) {
+                if (dialog.isConfirmed()) {
+                    r.run();
+                }
+            }
+        }, true);
         return d;
     }
 
@@ -123,7 +162,7 @@ public class ConfirmDialog extends Window {
 
     /**
      * Show confirm dialog.
-     *
+     * 
      * @param listener
      */
     public final void show(final Window parentWindow, final Listener listener,
@@ -136,7 +175,7 @@ public class ConfirmDialog extends Window {
 
     /**
      * Did the user confirm the dialog.
-     *
+     * 
      * @return
      */
     public final boolean isConfirmed() {
@@ -194,7 +233,7 @@ public class ConfirmDialog extends Window {
 
     /**
      * Format the messageLabel by maintaining text only.
-     *
+     * 
      * @param text
      * @return
      */
@@ -204,9 +243,9 @@ public class ConfirmDialog extends Window {
 
     /**
      * Set the isConfirmed state.
-     *
+     * 
      * Note: this should only be called internally by the listeners.
-     *
+     * 
      * @param isConfirmed
      */
     protected final void setConfirmed(final boolean confirmed) {
