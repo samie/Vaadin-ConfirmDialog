@@ -1,6 +1,5 @@
 package org.vaadin.dialogs;
 
-import java.lang.reflect.Method;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -10,10 +9,10 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.Root;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
@@ -77,9 +76,9 @@ public class DefaultConfirmDialogFactory implements Factory {
         c.setSizeFull();
         c.setSpacing(true);
 
-        // Panel for scrolling lengthty messages.
+        // Panel for scrolling lengthy messages.
         Panel scroll = new Panel(new VerticalLayout());
-        scroll.setScrollable(true);
+        //TODO: What now Vaadin7? scroll.setScrollable(true);
         c.addComponent(scroll);
         scroll.setWidth("100%");
         scroll.setHeight("100%");
@@ -87,7 +86,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         c.setExpandRatio(scroll, 1f);
 
         // Always HTML, but escape
-        Label text = new Label("", Label.CONTENT_RAW);
+        Label text = new Label("", Label.ContentMode.RAW);
         scroll.addComponent(text);
         confirm.setMessageLabel(text);
         confirm.setMessage(message);
@@ -135,16 +134,8 @@ public class DefaultConfirmDialogFactory implements Factory {
 
                     // We need to cast this way, because of the backward
                     // compatibility issue in 6.4 series.
-                    Component parent = confirm.getParent();
-                    if (parent instanceof Window) {
-                        try {
-                            Method m = parent.getClass().getDeclaredMethod(
-                                    "removeWindow", Window.class);
-                            m.invoke(parent, confirm);
-                        } catch (Exception e) {
-                            throw new RuntimeException("Failed to remove confirmation dialof from the parent window.", e);
-                        }
-                    }
+                    Root parent = confirm.getRoot();
+                    parent.removeWindow(confirm);
 
                     // This has to be invoked as the window.close
                     // event is not fired when removed.
@@ -161,7 +152,7 @@ public class DefaultConfirmDialogFactory implements Factory {
 
         // Approximate the size of the dialog
         double[] dim = getDialogDimensions(message,
-                ConfirmDialog.CONTENT_TEXT_WITH_NEWLINES);
+                ConfirmDialog.ContentMode.TEXT_WITH_NEWLINES);
         confirm.setWidth(format(dim[0]) + "em");
         confirm.setHeight(format(dim[1]) + "em");
         confirm.setResizable(false);
@@ -176,7 +167,7 @@ public class DefaultConfirmDialogFactory implements Factory {
      *            Message string
      * @return
      */
-    protected double[] getDialogDimensions(String message, int style) {
+    protected double[] getDialogDimensions(String message, ConfirmDialog.ContentMode style) {
 
         // Based on Reindeer style:
         double chrW = 0.5d;
@@ -185,7 +176,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         double rows = Math.ceil(length / MAX_WIDTH);
 
         // Estimate extra lines
-        if (style == ConfirmDialog.CONTENT_TEXT_WITH_NEWLINES) {
+        if (style == ConfirmDialog.ContentMode.TEXT_WITH_NEWLINES) {
             rows += count("\n", message);
         }
 

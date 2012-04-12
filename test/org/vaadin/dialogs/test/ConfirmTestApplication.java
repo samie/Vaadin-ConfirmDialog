@@ -8,15 +8,16 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.vaadin.dialogs.ConfirmDialog;
 
 import com.vaadin.Application;
+import com.vaadin.RootRequiresMoreInformationException;
+import com.vaadin.terminal.WrappedRequest;
 import com.vaadin.terminal.gwt.server.AbstractApplicationServlet;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
+import com.vaadin.ui.Root;
 
 @SuppressWarnings("serial")
-public class ConfirmTestApplication extends Application {
+public class ConfirmTestApplication extends Root {
 
 	public static final String MESSAGE_1 = "This is the question?";
 
@@ -38,39 +39,42 @@ public class ConfirmTestApplication extends Application {
 		@Override
 		protected Application getNewApplication(HttpServletRequest request)
 				throws ServletException {
-			return new ConfirmTestApplication();
+			return new DummyApplication();
 		}
 
 		@Override
 		protected Class<? extends Application> getApplicationClass()
 				throws ClassNotFoundException {
-			return ConfirmTestApplication.class;
+			return DummyApplication.class;
 		}
 	}
 
-	private Window mainWindow;
+	 public static class DummyApplication extends Application {
+	        private static final long serialVersionUID = -1099516579868329607L;
+
+	        @Override
+	        protected Root getRoot(WrappedRequest request) throws RootRequiresMoreInformationException {
+	            return new ConfirmTestApplication();
+	        }
+	 }
+
 
 	@Override
-	public void init() {
-		mainWindow = new Window("Example and test application");
-
-		((VerticalLayout) mainWindow.getContent()).setSpacing(true);
-
+	protected void init(WrappedRequest request) {
+		setCaption("Example and test application");
 		Label label = new Label("Hello Vaadin user");
-		mainWindow.addComponent(label);
-
+		addComponent(label);
 		addBasicExample();
-		
-		setMainWindow(mainWindow);
+
 	}
-	
+
 	private void addBasicExample() {
 		Button button = new Button("Basic");
 		button.setDebugId("basic");
 		button.addListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
 				// The quickest way to confirm
-				ConfirmDialog.show(getMainWindow(), MESSAGE_1,
+				ConfirmDialog.show(getRoot(), MESSAGE_1,
 				        new ConfirmDialog.Listener() {
 
 				            public void onClose(ConfirmDialog dialog) {
@@ -82,14 +86,15 @@ public class ConfirmTestApplication extends Application {
 				                    feedback(dialog.isConfirmed());
 				                }
 				            }
-				        });				
+				        });
 			}
 		});
-		mainWindow.addComponent(button);
+		getRoot().addComponent(button);
 	}
-	
+
 	private void feedback(boolean confirmed) {
-		getMainWindow().showNotification("Confirmed:" + confirmed);
+		getRoot().showNotification("Confirmed:" + confirmed);
 	}
+
 
 }

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.vaadin.terminal.gwt.server.JsonPaintTarget;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Root;
 import com.vaadin.ui.Window;
 
 public class ConfirmDialog extends Window {
@@ -20,18 +21,16 @@ public class ConfirmDialog extends Window {
     static final String DEFAULT_CANCEL_CAPTION = "Cancel";
     static final String DEFAULT_OK_CAPTION = "Ok";
 
-    public static final int CONTENT_TEXT_WITH_NEWLINES = -1;
-    public static final int CONTENT_TEXT = Label.CONTENT_TEXT;
-    public static final int CONTENT_PREFORMATTED = Label.CONTENT_PREFORMATTED;
-    public static final int CONTENT_HTML = Label.CONTENT_RAW;
-    public static final int CONTENT_DEFAULT = CONTENT_TEXT_WITH_NEWLINES;
+    enum ContentMode {
+        TEXT_WITH_NEWLINES, TEXT, PREFORMATTED, HTML
+    };
 
     /**
      * Listener for dialog close events. Implement and register an instance of
      * this interface to dialog to receive close events.
-     * 
+     *
      * @author Sami Ekblad
-     * 
+     *
      */
     public interface Listener extends Serializable {
         void onClose(ConfirmDialog dialog);
@@ -39,15 +38,15 @@ public class ConfirmDialog extends Window {
 
     /**
      * Default dialog factory.
-     * 
+     *
      */
     private static ConfirmDialog.Factory factoryInstance;
 
     /**
      * Get the ConfirmDialog.Factory used to create and configure the dialog.
-     * 
+     *
      * By default the {@link DefaultConfirmDialogFactory} is used.
-     * 
+     *
      * @return
      */
     public static ConfirmDialog.Factory getFactory() {
@@ -59,9 +58,9 @@ public class ConfirmDialog extends Window {
 
     /**
      * Set the ConfirmDialog.Factory used to create and configure the dialog.
-     * 
+     *
      * By default the {@link DefaultConfirmDialogFactory} is used.
-     * 
+     *
      * @return
      */
     public static void setFactory(final ConfirmDialog.Factory newFactory) {
@@ -70,31 +69,30 @@ public class ConfirmDialog extends Window {
 
     /**
      * Show a modal ConfirmDialog in a window.
-     * 
+     *
      * @param parentWindow
      * @param listener
      */
-    public static ConfirmDialog show(final Window parentWindow,
-            final Listener listener) {
-        return show(parentWindow, null, null, null, null, listener);
+    public static ConfirmDialog show(final Root root, final Listener listener) {
+        return show(root, null, null, null, null, listener);
     }
 
     /**
      * Show a modal ConfirmDialog in a window.
-     * 
+     *
      * @param parentWindow
      * @param messageLabel
      * @param listener
      * @return
      */
-    public static ConfirmDialog show(final Window parentWindow,
-            final String message, final Listener listener) {
-        return show(parentWindow, null, message, null, null, listener);
+    public static ConfirmDialog show(final Root root, final String message,
+            final Listener listener) {
+        return show(root, null, message, null, null, listener);
     }
 
     /**
      * Show a modal ConfirmDialog in a window.
-     * 
+     *
      * @param parentWindow
      *            Main level window.
      * @param windowCaption
@@ -109,20 +107,20 @@ public class ConfirmDialog extends Window {
      *            Listener for dialog result.
      * @return
      */
-    public static ConfirmDialog show(final Window parentWindow,
+    public static ConfirmDialog show(final Root root,
             final String windowCaption, final String message,
             final String okCaption, final String cancelCaption,
             final Listener listener) {
         ConfirmDialog d = getFactory().create(windowCaption, message,
                 okCaption, cancelCaption);
-        d.show(parentWindow, listener, true);
+        d.show(root, listener, true);
         return d;
     }
 
     /**
      * Shows a modal ConfirmDialog in given window and executes Runnable if OK
      * is chosen.
-     * 
+     *
      * @param parentWindow
      *            Main level window.
      * @param windowCaption
@@ -137,12 +135,14 @@ public class ConfirmDialog extends Window {
      *            Runnable to be run if confirmed
      * @return
      */
-    public static ConfirmDialog show(final Window parentWindow,
+    public static ConfirmDialog show(final Root root,
             final String windowCaption, final String message,
             final String okCaption, final String cancelCaption, final Runnable r) {
         ConfirmDialog d = getFactory().create(windowCaption, message,
                 okCaption, cancelCaption);
-        d.show(parentWindow, new Listener() {
+        d.show(root, new Listener() {
+            private static final long serialVersionUID = 1L;
+
             public void onClose(ConfirmDialog dialog) {
                 if (dialog.isConfirmed()) {
                     r.run();
@@ -158,24 +158,24 @@ public class ConfirmDialog extends Window {
     private Button okBtn = null;
     private Button cancelBtn = null;
     private String originalMessageText;
-    private int msgContentMode = CONTENT_TEXT_WITH_NEWLINES;
+    private ContentMode msgContentMode = ContentMode.TEXT_WITH_NEWLINES;
 
     /**
      * Show confirm dialog.
-     * 
+     *
      * @param listener
      */
-    public final void show(final Window parentWindow, final Listener listener,
+    public final void show(final Root root, final Listener listener,
             final boolean modal) {
         confirmListener = listener;
         center();
         setModal(modal);
-        parentWindow.addWindow(this);
+        root.addWindow(this);
     }
 
     /**
      * Did the user confirm the dialog.
-     * 
+     *
      * @return
      */
     public final boolean isConfirmed() {
@@ -209,7 +209,7 @@ public class ConfirmDialog extends Window {
     public final void setMessage(final String message) {
         originalMessageText = message;
         messageLabel
-                .setValue(CONTENT_TEXT_WITH_NEWLINES == msgContentMode ? formatDialogMessage(message)
+                .setValue(ContentMode.TEXT_WITH_NEWLINES == msgContentMode ? formatDialogMessage(message)
                         : message);
     }
 
@@ -217,23 +217,35 @@ public class ConfirmDialog extends Window {
         return originalMessageText;
     }
 
-    public final int getContentMode() {
+    public final ContentMode getContentMode() {
         return msgContentMode;
     }
 
-    public final void setContentMode(final int contentMode) {
+    public final void setContentMode(final ContentMode contentMode) {
         msgContentMode = contentMode;
+        com.vaadin.ui.Label.ContentMode labelContentMode = Label.ContentMode.TEXT;
+        switch (contentMode) {
+        case TEXT_WITH_NEWLINES:
+        case TEXT:
+            labelContentMode = Label.ContentMode.TEXT;
+            break;
+        case PREFORMATTED:
+            labelContentMode = Label.ContentMode.PREFORMATTED;
+            break;
+        case HTML:
+            labelContentMode = Label.ContentMode.RAW;
+            break;
+        }
         messageLabel
-                .setContentMode(contentMode == CONTENT_TEXT_WITH_NEWLINES ? CONTENT_TEXT
-                        : contentMode);
+                .setContentMode(labelContentMode);
         messageLabel
-                .setValue(contentMode == CONTENT_TEXT_WITH_NEWLINES ? formatDialogMessage(originalMessageText)
+                .setValue(contentMode == ContentMode.TEXT_WITH_NEWLINES ? formatDialogMessage(originalMessageText)
                         : originalMessageText);
     }
 
     /**
      * Format the messageLabel by maintaining text only.
-     * 
+     *
      * @param text
      * @return
      */
@@ -243,9 +255,9 @@ public class ConfirmDialog extends Window {
 
     /**
      * Set the isConfirmed state.
-     * 
+     *
      * Note: this should only be called internally by the listeners.
-     * 
+     *
      * @param isConfirmed
      */
     protected final void setConfirmed(final boolean confirmed) {
