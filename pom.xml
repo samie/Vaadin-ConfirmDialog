@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.vaadin.addon</groupId>
   <artifactId>confirmdialog</artifactId>
-  <version>1.2.0</version>
+  <version>1.2.1</version>
   <name>ConfirmDialog</name>
   <description>The ConfirmDialog add-on provides you a configurable way of requesting user 
 	confirmation for a button click or some other some operation. </description>

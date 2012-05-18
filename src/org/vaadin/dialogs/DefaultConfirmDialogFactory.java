@@ -138,7 +138,7 @@ public class DefaultConfirmDialogFactory implements Factory {
                     Component parent = confirm.getParent();
                     if (parent instanceof Window) {
                         try {
-                            Method m = parent.getClass().getDeclaredMethod(
+                            Method m = Window.class.getDeclaredMethod(
                                     "removeWindow", Window.class);
                             m.invoke(parent, confirm);
                         } catch (Exception e) {
