@@ -142,7 +142,7 @@ public class DefaultConfirmDialogFactory implements Factory {
                                     "removeWindow", Window.class);
                             m.invoke(parent, confirm);
                         } catch (Exception e) {
-                            throw new RuntimeException("Failed to remove confirmation dialof from the parent window.", e);
+                            throw new RuntimeException("Failed to remove confirmation dialog from the parent window.", e);
                         }
                     }
 
