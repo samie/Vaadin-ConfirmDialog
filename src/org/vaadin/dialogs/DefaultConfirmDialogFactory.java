@@ -86,7 +86,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         c.setExpandRatio(scroll, 1f);
 
         // Always HTML, but escape
-        Label text = new Label("", Label.ContentMode.RAW);
+        Label text = new Label("", com.vaadin.shared.ui.label.ContentMode.XHTML);
         scroll.addComponent(text);
         confirm.setMessageLabel(text);
         confirm.setMessage(message);

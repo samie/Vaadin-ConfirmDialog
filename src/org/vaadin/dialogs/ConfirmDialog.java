@@ -223,17 +223,17 @@ public class ConfirmDialog extends Window {
 
     public final void setContentMode(final ContentMode contentMode) {
         msgContentMode = contentMode;
-        com.vaadin.ui.Label.ContentMode labelContentMode = Label.ContentMode.TEXT;
+        com.vaadin.shared.ui.label.ContentMode labelContentMode = com.vaadin.shared.ui.label.ContentMode.TEXT;
         switch (contentMode) {
         case TEXT_WITH_NEWLINES:
         case TEXT:
-            labelContentMode = Label.ContentMode.TEXT;
+            labelContentMode = com.vaadin.shared.ui.label.ContentMode.TEXT;
             break;
         case PREFORMATTED:
-            labelContentMode = Label.ContentMode.PREFORMATTED;
+            labelContentMode = com.vaadin.shared.ui.label.ContentMode.PREFORMATTED;
             break;
         case HTML:
-            labelContentMode = Label.ContentMode.RAW;
+            labelContentMode = com.vaadin.shared.ui.label.ContentMode.XHTML;
             break;
         }
         messageLabel

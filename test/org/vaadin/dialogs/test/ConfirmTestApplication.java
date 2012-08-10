@@ -61,7 +61,7 @@ public class ConfirmTestApplication extends Root {
 
 	@Override
 	protected void init(WrappedRequest request) {
-		setCaption("Example and test application");
+		getPage().setTitle("Example and test application");
 		Label label = new Label("Hello Vaadin user");
 		addComponent(label);
 		addBasicExample();
