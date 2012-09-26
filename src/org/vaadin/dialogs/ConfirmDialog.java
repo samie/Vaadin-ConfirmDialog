@@ -2,10 +2,10 @@ package org.vaadin.dialogs;
 
 import java.io.Serializable;
 
-import com.vaadin.terminal.gwt.server.JsonPaintTarget;
+import com.vaadin.server.JsonPaintTarget;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Root;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 
 public class ConfirmDialog extends Window {
@@ -73,8 +73,8 @@ public class ConfirmDialog extends Window {
      * @param parentWindow
      * @param listener
      */
-    public static ConfirmDialog show(final Root root, final Listener listener) {
-        return show(root, null, null, null, null, listener);
+    public static ConfirmDialog show(final UI ui, final Listener listener) {
+        return show(ui, null, null, null, null, listener);
     }
 
     /**
@@ -85,9 +85,9 @@ public class ConfirmDialog extends Window {
      * @param listener
      * @return
      */
-    public static ConfirmDialog show(final Root root, final String message,
+    public static ConfirmDialog show(final UI ui, final String message,
             final Listener listener) {
-        return show(root, null, message, null, null, listener);
+        return show(ui, null, message, null, null, listener);
     }
 
     /**
@@ -107,13 +107,13 @@ public class ConfirmDialog extends Window {
      *            Listener for dialog result.
      * @return
      */
-    public static ConfirmDialog show(final Root root,
+    public static ConfirmDialog show(final UI ui,
             final String windowCaption, final String message,
             final String okCaption, final String cancelCaption,
             final Listener listener) {
         ConfirmDialog d = getFactory().create(windowCaption, message,
                 okCaption, cancelCaption);
-        d.show(root, listener, true);
+        d.show(ui, listener, true);
         return d;
     }
 
@@ -135,12 +135,12 @@ public class ConfirmDialog extends Window {
      *            Runnable to be run if confirmed
      * @return
      */
-    public static ConfirmDialog show(final Root root,
+    public static ConfirmDialog show(final UI ui,
             final String windowCaption, final String message,
             final String okCaption, final String cancelCaption, final Runnable r) {
         ConfirmDialog d = getFactory().create(windowCaption, message,
                 okCaption, cancelCaption);
-        d.show(root, new Listener() {
+        d.show(ui, new Listener() {
             private static final long serialVersionUID = 1L;
 
             public void onClose(ConfirmDialog dialog) {
@@ -165,12 +165,12 @@ public class ConfirmDialog extends Window {
      *
      * @param listener
      */
-    public final void show(final Root root, final Listener listener,
+    public final void show(final UI ui, final Listener listener,
             final boolean modal) {
         confirmListener = listener;
         center();
         setModal(modal);
-        root.addWindow(this);
+        ui.addWindow(this);
     }
 
     /**
@@ -233,7 +233,7 @@ public class ConfirmDialog extends Window {
             labelContentMode = com.vaadin.shared.ui.label.ContentMode.PREFORMATTED;
             break;
         case HTML:
-            labelContentMode = com.vaadin.shared.ui.label.ContentMode.XHTML;
+            labelContentMode = com.vaadin.shared.ui.label.ContentMode.HTML;
             break;
         }
         messageLabel

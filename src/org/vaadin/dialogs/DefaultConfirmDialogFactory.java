@@ -12,7 +12,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.Root;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
@@ -86,7 +86,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         c.setExpandRatio(scroll, 1f);
 
         // Always HTML, but escape
-        Label text = new Label("", com.vaadin.shared.ui.label.ContentMode.XHTML);
+        Label text = new Label("", com.vaadin.shared.ui.label.ContentMode.HTML);
         scroll.addComponent(text);
         confirm.setMessageLabel(text);
         confirm.setMessage(message);
@@ -134,7 +134,7 @@ public class DefaultConfirmDialogFactory implements Factory {
 
                     // We need to cast this way, because of the backward
                     // compatibility issue in 6.4 series.
-                    Root parent = confirm.getRoot();
+                    UI parent = confirm.getUI();
                     parent.removeWindow(confirm);
 
                     // This has to be invoked as the window.close
