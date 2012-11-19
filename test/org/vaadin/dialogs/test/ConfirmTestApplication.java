@@ -58,8 +58,7 @@ public class ConfirmTestApplication extends UI {
                                     return ConfirmTestApplication.class;
                                 }
                             };
-                            getService().addUIProvider(event.getSession(),
-                                    uiprovider);
+                            event.getSession().addUIProvider(uiprovider);
                         }
                     });
 
@@ -70,7 +69,7 @@ public class ConfirmTestApplication extends UI {
     protected void init(VaadinRequest request) {
         getPage().setTitle("Example and test application");
         Label label = new Label("Hello Vaadin user");
-        addComponent(label);
+        setContent(label);
         addBasicExample();
 
     }
@@ -98,7 +97,7 @@ public class ConfirmTestApplication extends UI {
                         });
             }
         });
-        getUI().addComponent(button);
+        getUI().setContent(button);
     }
 
 }
