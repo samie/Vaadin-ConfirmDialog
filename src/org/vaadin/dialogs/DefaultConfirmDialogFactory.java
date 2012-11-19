@@ -72,7 +72,8 @@ public class DefaultConfirmDialogFactory implements Factory {
         });
 
         // Create content
-        VerticalLayout c = (VerticalLayout) confirm.getContent();
+        VerticalLayout c = new VerticalLayout();
+		confirm.setContent(c);
         c.setSizeFull();
         c.setSpacing(true);
 
@@ -87,7 +88,7 @@ public class DefaultConfirmDialogFactory implements Factory {
 
         // Always HTML, but escape
         Label text = new Label("", com.vaadin.shared.ui.label.ContentMode.HTML);
-        scroll.addComponent(text);
+        scroll.setContent(text);
         confirm.setMessageLabel(text);
         confirm.setMessage(message);
 
