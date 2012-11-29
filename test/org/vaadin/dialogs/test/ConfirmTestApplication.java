@@ -3,6 +3,7 @@ package org.vaadin.dialogs.test;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 
+import com.vaadin.ui.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.vaadin.dialogs.ConfirmDialog;
@@ -14,11 +15,7 @@ import com.vaadin.server.UIClassSelectionEvent;
 import com.vaadin.server.UIProvider;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.UI;
 
 @SuppressWarnings("serial")
 public class ConfirmTestApplication extends UI {
@@ -51,15 +48,13 @@ public class ConfirmTestApplication extends UI {
                                 SessionInitEvent event)
                                 throws ServiceException {
                             UIProvider uiprovider = new UIProvider() {
-
                                 @Override
                                 public Class<? extends UI> getUIClass(
                                         UIClassSelectionEvent event) {
                                     return ConfirmTestApplication.class;
                                 }
                             };
-                            getService().addUIProvider(event.getSession(),
-                                    uiprovider);
+                            event.getSession().addUIProvider(uiprovider);
                         }
                     });
 
@@ -69,13 +64,14 @@ public class ConfirmTestApplication extends UI {
     @Override
     protected void init(VaadinRequest request) {
         getPage().setTitle("Example and test application");
+        VerticalLayout layout = new VerticalLayout();
         Label label = new Label("Hello Vaadin user");
-        addComponent(label);
-        addBasicExample();
-
+        layout.addComponent(label);
+        addBasicExample(layout);
+        setContent(layout);
     }
 
-    private void addBasicExample() {
+    private void addBasicExample(Layout layout) {
         Button button = new Button("Basic");
         button.setId("basic");
         button.addClickListener(new Button.ClickListener() {
@@ -98,7 +94,7 @@ public class ConfirmTestApplication extends UI {
                         });
             }
         });
-        getUI().addComponent(button);
+        layout.addComponent(button);
     }
 
 }

@@ -54,7 +54,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         confirm.setCaption(caption != null ? caption : DEFAULT_CAPTION);
 
         // Close listener implementation
-        confirm.addListener(new Window.CloseListener() {
+        confirm.addCloseListener(new Window.CloseListener() {
 
             private static final long serialVersionUID = 1971800928047045825L;
 
@@ -87,7 +87,9 @@ public class DefaultConfirmDialogFactory implements Factory {
 
         // Always HTML, but escape
         Label text = new Label("", com.vaadin.shared.ui.label.ContentMode.HTML);
-        scroll.addComponent(text);
+        VerticalLayout layout = new VerticalLayout();
+        layout.addComponent(text);
+        scroll.setContent(layout);
         confirm.setMessageLabel(text);
         confirm.setMessage(message);
 
@@ -147,8 +149,8 @@ public class DefaultConfirmDialogFactory implements Factory {
             }
 
         };
-        cancel.addListener(cb);
-        ok.addListener(cb);
+        cancel.addClickListener(cb);
+        ok.addClickListener(cb);
 
         // Approximate the size of the dialog
         double[] dim = getDialogDimensions(message,
