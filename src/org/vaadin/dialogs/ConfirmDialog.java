@@ -3,10 +3,7 @@ package org.vaadin.dialogs;
 import java.io.Serializable;
 
 import com.vaadin.server.JsonPaintTarget;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.Window;
+import com.vaadin.ui.*;
 
 public class ConfirmDialog extends Window {
 
@@ -70,7 +67,7 @@ public class ConfirmDialog extends Window {
     /**
      * Show a modal ConfirmDialog in a window.
      *
-     * @param parentWindow
+     * @param ui
      * @param listener
      */
     public static ConfirmDialog show(final UI ui, final Listener listener) {
@@ -80,8 +77,8 @@ public class ConfirmDialog extends Window {
     /**
      * Show a modal ConfirmDialog in a window.
      *
-     * @param parentWindow
-     * @param messageLabel
+     * @param ui
+     * @param message
      * @param listener
      * @return
      */
@@ -93,7 +90,7 @@ public class ConfirmDialog extends Window {
     /**
      * Show a modal ConfirmDialog in a window.
      *
-     * @param parentWindow
+     * @param ui
      *            Main level window.
      * @param windowCaption
      *            Caption for the confirmation dialog window.
@@ -121,7 +118,7 @@ public class ConfirmDialog extends Window {
      * Shows a modal ConfirmDialog in given window and executes Runnable if OK
      * is chosen.
      *
-     * @param parentWindow
+     * @param ui
      *            Main level window.
      * @param windowCaption
      *            Caption for the confirmation dialog window.
@@ -159,6 +156,12 @@ public class ConfirmDialog extends Window {
     private Button cancelBtn = null;
     private String originalMessageText;
     private ContentMode msgContentMode = ContentMode.TEXT_WITH_NEWLINES;
+
+    public ConfirmDialog() {
+        VerticalLayout layout = new VerticalLayout();
+        layout.setMargin(true);
+        setContent(layout);
+    }
 
     /**
      * Show confirm dialog.
@@ -258,7 +261,7 @@ public class ConfirmDialog extends Window {
      *
      * Note: this should only be called internally by the listeners.
      *
-     * @param isConfirmed
+     * @param confirmed
      */
     protected final void setConfirmed(final boolean confirmed) {
         isConfirmed = confirmed;
