@@ -3,6 +3,7 @@ package org.vaadin.dialogs;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import com.vaadin.server.Sizeable;
 import org.vaadin.dialogs.ConfirmDialog.Factory;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -54,12 +55,9 @@ public class DefaultConfirmDialogFactory implements Factory {
         confirm.setCaption(caption != null ? caption : DEFAULT_CAPTION);
 
         // Close listener implementation
-        confirm.addListener(new Window.CloseListener() {
-
-            private static final long serialVersionUID = 1971800928047045825L;
-
-            public void windowClose(CloseEvent ce) {
-
+        confirm.addCloseListener(new Window.CloseListener() {
+            @Override
+            public void windowClose(CloseEvent e) {
                 // Only process if still enabled
                 if (confirm.isEnabled()) {
                     confirm.setEnabled(false); // avoid double processing
@@ -80,14 +78,15 @@ public class DefaultConfirmDialogFactory implements Factory {
         Panel scroll = new Panel(new VerticalLayout());
         //TODO: What now Vaadin7? scroll.setScrollable(true);
         c.addComponent(scroll);
-        scroll.setWidth("100%");
-        scroll.setHeight("100%");
+        scroll.setSizeFull();
         scroll.setStyleName(Reindeer.PANEL_LIGHT);
-        c.setExpandRatio(scroll, 1f);
+        //c.setExpandRatio(scroll, 1f);
 
         // Always HTML, but escape
         Label text = new Label("", com.vaadin.shared.ui.label.ContentMode.HTML);
-        scroll.addComponent(text);
+        VerticalLayout content = (VerticalLayout) scroll.getContent();
+        content.setMargin(true);
+        content.addComponent(text);
         confirm.setMessageLabel(text);
         confirm.setMessage(message);
 
@@ -96,10 +95,10 @@ public class DefaultConfirmDialogFactory implements Factory {
         buttons.setSpacing(true);
 
         buttons.setHeight(format(BUTTON_HEIGHT) + "em");
-        buttons.setWidth("100%");
+        buttons.setWidth(100, Sizeable.Unit.PERCENTAGE);
         Label spacer = new Label("");
         buttons.addComponent(spacer);
-        spacer.setWidth("100%");
+        spacer.setWidth(100, Sizeable.Unit.PERCENTAGE);
         buttons.setExpandRatio(spacer, 1f);
 
         final Button cancel = new Button(cancelCaption != null ? cancelCaption
@@ -147,14 +146,14 @@ public class DefaultConfirmDialogFactory implements Factory {
             }
 
         };
-        cancel.addListener(cb);
-        ok.addListener(cb);
+        cancel.addClickListener(cb);
+        ok.addClickListener(cb);
 
         // Approximate the size of the dialog
         double[] dim = getDialogDimensions(message,
                 ConfirmDialog.ContentMode.TEXT_WITH_NEWLINES);
-        confirm.setWidth(format(dim[0]) + "em");
-        confirm.setHeight(format(dim[1]) + "em");
+        confirm.setWidth(Float.parseFloat(format(dim[0])), Sizeable.Unit.EM);
+        confirm.setHeight(Float.parseFloat(format(dim[1])), Sizeable.Unit.EM);
         confirm.setResizable(false);
 
         return confirm;
