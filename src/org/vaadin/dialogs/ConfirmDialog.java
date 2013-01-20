@@ -3,10 +3,7 @@ package org.vaadin.dialogs;
 import java.io.Serializable;
 
 import com.vaadin.server.JsonPaintTarget;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.Window;
+import com.vaadin.ui.*;
 
 public class ConfirmDialog extends Window {
 
@@ -24,6 +21,10 @@ public class ConfirmDialog extends Window {
     enum ContentMode {
         TEXT_WITH_NEWLINES, TEXT, PREFORMATTED, HTML
     };
+
+    public ConfirmDialog() {
+        setContent(new VerticalLayout());
+    }
 
     /**
      * Listener for dialog close events. Implement and register an instance of
