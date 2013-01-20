@@ -5,7 +5,7 @@
     <artifactId>confirmdialog</artifactId>
     <version>2.0.2</version>
     <properties>
-        <vaadin.version>7.0.0.beta11</vaadin.version>
+        <vaadin.version>7.0.0.rc1</vaadin.version>
     </properties>
     <name>ConfirmDialog</name>
     <description>The ConfirmDialog add-on provides you a configurable way of requesting user
