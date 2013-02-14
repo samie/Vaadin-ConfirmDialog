@@ -54,7 +54,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         confirm.setCaption(caption != null ? caption : DEFAULT_CAPTION);
 
         // Close listener implementation
-        confirm.addListener(new Window.CloseListener() {
+        confirm.addCloseListener(new Window.CloseListener() {
 
             private static final long serialVersionUID = 1971800928047045825L;
 
@@ -72,22 +72,24 @@ public class DefaultConfirmDialogFactory implements Factory {
         });
 
         // Create content
-        VerticalLayout c = (VerticalLayout) confirm.getContent();
+        VerticalLayout c = new VerticalLayout();
+        confirm.setContent(c);
         c.setSizeFull();
         c.setSpacing(true);
+        c.setMargin(true);
 
         // Panel for scrolling lengthy messages.
-        Panel scroll = new Panel(new VerticalLayout());
-        //TODO: What now Vaadin7? scroll.setScrollable(true);
-        c.addComponent(scroll);
-        scroll.setWidth("100%");
-        scroll.setHeight("100%");
-        scroll.setStyleName(Reindeer.PANEL_LIGHT);
-        c.setExpandRatio(scroll, 1f);
+        VerticalLayout scrollContent = new VerticalLayout();
+        Panel panel = new Panel(scrollContent);
+        c.addComponent(panel);
+        panel.setWidth("100%");
+        panel.setHeight("100%");
+        panel.setStyleName(Reindeer.PANEL_LIGHT);
+        c.setExpandRatio(panel, 1f);
 
         // Always HTML, but escape
         Label text = new Label("", com.vaadin.shared.ui.label.ContentMode.HTML);
-        scroll.addComponent(text);
+        scrollContent.addComponent(text);
         confirm.setMessageLabel(text);
         confirm.setMessage(message);
 
@@ -95,7 +97,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         c.addComponent(buttons);
         buttons.setSpacing(true);
 
-        buttons.setHeight(format(BUTTON_HEIGHT) + "em");
+        buttons.setHeight("18px"); //TODO: Had to set in px for Vaadin 7
         buttons.setWidth("100%");
         Label spacer = new Label("");
         buttons.addComponent(spacer);
@@ -147,8 +149,8 @@ public class DefaultConfirmDialogFactory implements Factory {
             }
 
         };
-        cancel.addListener(cb);
-        ok.addListener(cb);
+        cancel.addClickListener(cb);
+        ok.addClickListener(cb);
 
         // Approximate the size of the dialog
         double[] dim = getDialogDimensions(message,
@@ -167,10 +169,11 @@ public class DefaultConfirmDialogFactory implements Factory {
      *            Message string
      * @return
      */
-    protected double[] getDialogDimensions(String message, ConfirmDialog.ContentMode style) {
+    protected double[] getDialogDimensions(String message,
+            ConfirmDialog.ContentMode style) {
 
         // Based on Reindeer style:
-        double chrW = 0.5d;
+        double chrW = 0.51d;
         double chrH = 1.5d;
         double length = chrW * message.length();
         double rows = Math.ceil(length / MAX_WIDTH);
@@ -180,8 +183,8 @@ public class DefaultConfirmDialogFactory implements Factory {
             rows += count("\n", message);
         }
 
-        // System.out.println(message.length() + " = " + length + "em");
-        // System.out.println("Rows: " + (length / MAX_WIDTH) + " = " + rows);
+        //System.out.println(message.length() + " = " + length + "em");
+        //System.out.println("Rows: " + (length / MAX_WIDTH) + " = " + rows);
 
         // Obey maximum size
         double width = Math.min(MAX_WIDTH, length);
@@ -192,13 +195,13 @@ public class DefaultConfirmDialogFactory implements Factory {
         height = Math.max(height, MIN_HEIGHT);
 
         // Based on Reindeer style:
-        double btnHeight = 2.5d;
-        double vmargin = 8d;
-        double hmargin = 2d;
+        double btnHeight = 4d;
+        double vmargin = 5d;
+        double hmargin = 1d;
 
         double[] res = new double[] { width + hmargin,
                 height + btnHeight + vmargin };
-        // System.out.println(res[0] + "," + res[1]);
+        //System.out.println(res[0] + "," + res[1]);
         return res;
     }
 

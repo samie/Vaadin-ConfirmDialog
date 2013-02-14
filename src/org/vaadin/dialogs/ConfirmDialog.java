@@ -21,7 +21,7 @@ public class ConfirmDialog extends Window {
     static final String DEFAULT_CANCEL_CAPTION = "Cancel";
     static final String DEFAULT_OK_CAPTION = "Ok";
 
-    enum ContentMode {
+    public enum ContentMode {
         TEXT_WITH_NEWLINES, TEXT, PREFORMATTED, HTML
     };
 

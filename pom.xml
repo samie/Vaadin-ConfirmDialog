@@ -1,27 +1,28 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.vaadin.addon</groupId>
-  <artifactId>confirmdialog</artifactId>
-  <version>2.0.2</version>
-  <name>ConfirmDialog</name>
-  <description>The ConfirmDialog add-on provides you a configurable way of requesting user 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.vaadin.addon</groupId>
+	<artifactId>confirmdialog</artifactId>
+	<version>2.0.4</version>
+	<name>ConfirmDialog</name>
+	<description>The ConfirmDialog add-on provides you a configurable way of requesting user 
 	confirmation for a button click or some other some operation. </description>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-server</artifactId>
-			<version>7.0.0.beta2</version>
+			<version>7.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
-			<version>7.0.0.beta2</version>
+			<version>7.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-client-compiled</artifactId>
-			<version>7.0.0.beta2</version>
+			<version>7.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -44,9 +45,9 @@
 	</dependencies>
 
 	<build>
-	   <sourceDirectory>${basedir}/src</sourceDirectory>
-       <testSourceDirectory>${basedir}/test</testSourceDirectory>
-	
+		<sourceDirectory>${basedir}/src</sourceDirectory>
+		<testSourceDirectory>${basedir}/test</testSourceDirectory>
+
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -77,18 +78,8 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	
-	  <repositories>
-    <repository>
-      <id>vaadin-snapshots</id>
-      <url>http://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-	
-	</project>
+
+	<!-- <repositories> <repository> <id>vaadin-snapshots</id> <url>http://oss.sonatype.org/content/repositories/vaadin-snapshots/</url> 
+		<releases> <enabled>false</enabled> </releases> <snapshots> <enabled>true</enabled> 
+		</snapshots> </repository> </repositories> -->
+</project>
