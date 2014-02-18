@@ -17,9 +17,11 @@ public class ConfirmDialog extends Window {
                 String okTitle, String cancelTitle);
     }
 
-    static final String DEFAULT_WINDOW_CAPTION = "Confirm";
-    static final String DEFAULT_CANCEL_CAPTION = "Cancel";
-    static final String DEFAULT_OK_CAPTION = "Ok";
+    /* Test IDs for elements */
+    public static final String DIALOG_ID = "confirmdialog-window";
+    public static final String MESSAGE_ID = "confirmdialog-message";
+    public static final String OK_ID = "confirmdialog-ok-button";
+    public static final String CANCEL_ID = "confirmdialog-cancel-button";
 
     public enum ContentMode {
         TEXT_WITH_NEWLINES, TEXT, PREFORMATTED, HTML

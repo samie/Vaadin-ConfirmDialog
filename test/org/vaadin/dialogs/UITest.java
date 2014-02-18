@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.junit.After;
+import org.junit.AfterClass;
 import org.openqa.selenium.WebDriver;
 
 import com.vaadin.server.ServiceException;
@@ -30,35 +30,35 @@ import com.vaadin.ui.UI;
 public class UITest {
     private static final int DEFAULT_SERVER_PORT = 8888;
 
-    private Server server;
+    private static Server server;
 
-    private WebDriver driver;
+    private static WebDriver driver;
+
+    private static int serverPort = DEFAULT_SERVER_PORT;
 
     private static Class<? extends UI> testUI;
 
-    private int serverPort;
-
     public UITest() {
-        setServerPort(DEFAULT_SERVER_PORT);
     }
 
-    public void setServerPort(int serverPort) {
-        this.serverPort = serverPort;
+    public static void setServerPort(int serverPort) {
+        UITest.serverPort = serverPort;
     }
 
-    @After
-    public void stopBrowser() throws Exception {
+    @AfterClass
+    public static void stopBrowser() throws Exception {
         if (driver != null) {
             driver.close();
         }
         driver = null;
     }
 
-    @After
-    public void stopServer() throws Exception {
+    @AfterClass
+    public static void stopServer() throws Exception {
         if (server != null) {
             server.stop();
         }
+        server = null;
     }
 
     /**
@@ -69,25 +69,29 @@ public class UITest {
      * @param testUI
      * @param driver
      */
-    protected void openTestUI(Class<? extends UI> testUI, WebDriver driver) {
-        this.driver = driver;
+    protected static void openTestUI(Class<? extends UI> testUI, WebDriver driver) {
+        UITest.driver = driver;
 
         // Start the server for testing
         try {
-            startInEmbeddedJetty(testUI);
+            server = startInEmbeddedJetty(testUI);
         } catch (Exception e) {
             throw new RuntimeException("Failed to start embedded server", e);
         }
 
         // Open the WebDriver in the server URLs
         driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+        reloadPage();
+    }
+
+    protected static void reloadPage() {
         driver.get("http://localhost:" + serverPort + "/");
     }
 
-    private Server startInEmbeddedJetty(Class<? extends UI> testUI)
+    private static Server startInEmbeddedJetty(Class<? extends UI> testUI)
             throws Exception {
         Server server = new Server(serverPort);
-        this.testUI = testUI;
+        UITest.testUI = testUI;
         ServletContextHandler handler = new ServletContextHandler(
                 ServletContextHandler.SESSIONS);
         handler.addServlet(Servlet.class, "/*");
@@ -125,7 +129,7 @@ public class UITest {
         }
     }
 
-    protected WebDriver getDriver() {
+    protected static WebDriver getDriver() {
         return driver;
     }
 

@@ -51,6 +51,7 @@ public class DefaultConfirmDialogFactory implements Factory {
 
         // Create a confirm dialog
         final ConfirmDialog confirm = new ConfirmDialog();
+        confirm.setId(ConfirmDialog.DIALOG_ID);
         confirm.setCaption(caption != null ? caption : DEFAULT_CAPTION);
 
         // Close listener implementation
@@ -89,6 +90,7 @@ public class DefaultConfirmDialogFactory implements Factory {
 
         // Always HTML, but escape
         Label text = new Label("", com.vaadin.shared.ui.label.ContentMode.HTML);
+        text.setId(ConfirmDialog.MESSAGE_ID);
         scrollContent.addComponent(text);
         confirm.setMessageLabel(text);
         confirm.setMessage(message);
@@ -107,6 +109,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         final Button cancel = new Button(cancelCaption != null ? cancelCaption
                 : DEFAULT_CANCEL_CAPTION);
         cancel.setData(false);
+        cancel.setId(ConfirmDialog.CANCEL_ID);
         cancel.setClickShortcut(KeyCode.ESCAPE, null);
         buttons.addComponent(cancel);
         buttons.setComponentAlignment(cancel, Alignment.MIDDLE_RIGHT);
@@ -115,6 +118,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         final Button ok = new Button(okCaption != null ? okCaption
                 : DEFAULT_OK_CAPTION);
         ok.setData(true);
+        ok.setId(ConfirmDialog.OK_ID);
         ok.setClickShortcut(KeyCode.ENTER, null);
         ok.setStyleName(Reindeer.BUTTON_DEFAULT);
         ok.focus();
@@ -180,7 +184,7 @@ public class DefaultConfirmDialogFactory implements Factory {
 
         // Estimate extra lines
         if (style == ConfirmDialog.ContentMode.TEXT_WITH_NEWLINES) {
-            rows += count("\n", message);
+            rows += message != null? count("\n", message): 0;
         }
 
         //System.out.println(message.length() + " = " + length + "em");
