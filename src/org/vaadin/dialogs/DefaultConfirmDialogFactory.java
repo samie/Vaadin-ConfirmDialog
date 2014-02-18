@@ -175,7 +175,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         // Based on Reindeer style:
         double chrW = 0.51d;
         double chrH = 1.5d;
-        double length = chrW * message.length();
+        double length = message != null? chrW * message.length() : 0;
         double rows = Math.ceil(length / MAX_WIDTH);
 
         // Estimate extra lines
