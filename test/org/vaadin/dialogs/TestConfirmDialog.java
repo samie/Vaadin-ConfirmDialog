@@ -70,7 +70,7 @@ public class TestConfirmDialog extends TestBenchTestCase {
 
         // Assert message content in dialog
         String text = $(LabelElement.class).context(dialog)
-                .id(ConfirmDialog.MESSAGE_ID).first().getText();
+                .id(ConfirmDialog.MESSAGE_ID).getText();
         assertTrue(text.equals(ConfirmDialogTestUI.MESSAGE_1));
 
         // Click the cancel button in dialog
@@ -90,7 +90,7 @@ public class TestConfirmDialog extends TestBenchTestCase {
 
         // Assert message content in dialog
         String text = $(LabelElement.class).context(dialog)
-                .id(ConfirmDialog.MESSAGE_ID).first().getText();
+                .id(ConfirmDialog.MESSAGE_ID).getText();
         assertTrue(text.equals(""));
 
         // Click the cancel button
@@ -134,11 +134,11 @@ public class TestConfirmDialog extends TestBenchTestCase {
     }
 
     private void clickButton(String id, WebElement inContext) {
-        $(ButtonElement.class).context(inContext).id(id).first().click();
+        $(ButtonElement.class).context(inContext).id(id).click();
     }
 
     private void clickButton(String id) {
-        $(ButtonElement.class).id(id).first().click();
+        $(ButtonElement.class).id(id).click();
     }
 
     /**
@@ -148,7 +148,7 @@ public class TestConfirmDialog extends TestBenchTestCase {
      * @return WindowElement for the dialog
      */
     private WindowElement findConfirmDialog() {
-        return $(WindowElement.class).id(ConfirmDialog.DIALOG_ID).first();
+        return $(WindowElement.class).id(ConfirmDialog.DIALOG_ID);
     }
 
     /**
