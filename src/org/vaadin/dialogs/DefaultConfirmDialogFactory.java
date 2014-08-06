@@ -47,8 +47,10 @@ public class DefaultConfirmDialogFactory implements Factory {
     private static final double BUTTON_HEIGHT = 2.5;
 
     public ConfirmDialog create(final String caption, final String message,
-            final String okCaption, final String cancelCaption) {
+            final String okCaption, final String cancelCaption,
+            final String notOkCaption) {
 
+        final boolean threeWay = notOkCaption != null;
         // Create a confirm dialog
         final ConfirmDialog confirm = new ConfirmDialog();
         confirm.setId(ConfirmDialog.DIALOG_ID);
@@ -108,12 +110,25 @@ public class DefaultConfirmDialogFactory implements Factory {
 
         final Button cancel = new Button(cancelCaption != null ? cancelCaption
                 : DEFAULT_CANCEL_CAPTION);
-        cancel.setData(false);
+        cancel.setData(null);
         cancel.setId(ConfirmDialog.CANCEL_ID);
         cancel.setClickShortcut(KeyCode.ESCAPE, null);
         buttons.addComponent(cancel);
-        buttons.setComponentAlignment(cancel, Alignment.MIDDLE_RIGHT);
+        if (threeWay)
+            buttons.setComponentAlignment(cancel, Alignment.MIDDLE_LEFT);
+        else
+            buttons.setComponentAlignment(cancel, Alignment.MIDDLE_RIGHT);
         confirm.setCancelButton(cancel);
+
+        Button notOk = null;
+        if (threeWay) {
+            notOk = new Button(notOkCaption);
+            notOk.setData(false);
+            notOk.setId(ConfirmDialog.NOT_OK_ID);
+            buttons.addComponent(notOk);
+            buttons.setComponentAlignment(notOk, Alignment.MIDDLE_RIGHT);
+            confirm.setCancelButton(notOk);
+        }
 
         final Button ok = new Button(okCaption != null ? okCaption
                 : DEFAULT_OK_CAPTION);
@@ -136,7 +151,9 @@ public class DefaultConfirmDialogFactory implements Factory {
                 if (confirm.isEnabled()) {
                     confirm.setEnabled(false); // Avoid double processing
 
-                    confirm.setConfirmed(event.getButton() == ok);
+                    Button b = event.getButton();
+                    if (b != cancel)
+                        confirm.setConfirmed(b == ok);
 
                     // We need to cast this way, because of the backward
                     // compatibility issue in 6.4 series.
@@ -155,6 +172,8 @@ public class DefaultConfirmDialogFactory implements Factory {
         };
         cancel.addClickListener(cb);
         ok.addClickListener(cb);
+        if (notOk != null)
+            notOk.addClickListener(cb);
 
         // Approximate the size of the dialog
         double[] dim = getDialogDimensions(message,
