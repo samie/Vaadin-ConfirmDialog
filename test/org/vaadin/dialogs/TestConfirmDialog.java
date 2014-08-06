@@ -1,5 +1,6 @@
 package org.vaadin.dialogs;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -131,6 +132,61 @@ public class TestConfirmDialog extends TestBenchTestCase {
         // Assert notification value
         assertTrue(findNotification().getText().contains("false"));
 
+    }
+    
+    /** Opens dialog and presses cancel. */
+    @Test
+    public void testThreeWayOK() {
+
+        // Open confirm dialog
+        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_3);
+
+        // Get the dialog
+        WindowElement dialog = findConfirmDialog();
+        
+        // Click the ok button
+        clickButton(ConfirmDialog.OK_ID, dialog);
+
+        // Assert notification value
+        assertTrue(findNotification().getText().contains("Confirmed:true"));
+        assertTrue(findNotification().getText().contains("Canceled:false"));
+    }
+    
+    /** Opens dialog and presses cancel. */
+    @Test
+    public void testThreeWayCancel() {
+
+        // Open confirm dialog
+        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_3);
+
+        // Get the dialog
+        WindowElement dialog = findConfirmDialog();
+        
+        // Click the cancel button
+        clickButton(ConfirmDialog.CANCEL_ID, dialog);
+
+        // Assert notification value
+        assertTrue(findNotification().getText().contains("Confirmed:false"));
+        assertTrue(findNotification().getText().contains("Canceled:true"));
+    }
+
+
+    /** Opens dialog and presses cancel. */
+    @Test
+    public void testThreeWayNotOK() {
+
+        // Open confirm dialog
+        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_3);
+
+        // Get the dialog
+        WindowElement dialog = findConfirmDialog();
+        
+        // Click the not_ok button
+        clickButton(ConfirmDialog.NOT_OK_ID, dialog);
+
+        // Assert notification value
+        assertTrue(findNotification().getText().contains("Confirmed:false"));
+        assertTrue(findNotification().getText().contains("Canceled:false"));
     }
 
     private void clickButton(String id, WebElement inContext) {
