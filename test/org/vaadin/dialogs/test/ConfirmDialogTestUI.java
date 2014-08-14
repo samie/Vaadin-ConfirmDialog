@@ -16,6 +16,7 @@ public class ConfirmDialogTestUI extends UI {
 
     public static final String OPEN_BUTTON_1 = "confirm_1";
     public static final String OPEN_BUTTON_2 = "confirm_2";
+    public static final String OPEN_BUTTON_3 = "confirm_3";
 
     public static final String MESSAGE_1 = "This is the question?";
     public static final String MESSAGE_2 = null;
@@ -29,7 +30,7 @@ public class ConfirmDialogTestUI extends UI {
         addComponent(label);
         addBasicExample();
         addNullMessageExample();
-
+        addThreeWayExample();
     }
 
     private void addComponent(Component c) {
@@ -76,6 +77,25 @@ public class ConfirmDialogTestUI extends UI {
                             Notification.show("Confirmed:"
                                     + dialog.isConfirmed());
                         }
+                    }
+                });
+            }
+        });
+        addComponent(button);
+    }
+
+    private void addThreeWayExample() {
+        Button button = new Button("Click " + OPEN_BUTTON_3);
+        button.setId(OPEN_BUTTON_3);
+        button.addClickListener(new Button.ClickListener() {
+            public void buttonClick(ClickEvent event) {
+                // The quickest way to confirm
+                ConfirmDialog.show(getUI(), "blob", MESSAGE_1, "foo", "cancel",
+                        "bar", new ConfirmDialog.Listener() {
+
+                    public void onClose(ConfirmDialog dialog) {
+                            Notification.show("Confirmed:"
+                                    + dialog.isConfirmed()+" Canceled:"+dialog.isCanceled());
                     }
                 });
             }
