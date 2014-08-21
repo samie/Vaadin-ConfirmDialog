@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.vaadin.addon</groupId>
 	<artifactId>confirmdialog</artifactId>
-	<version>2.0.6-SNAPSHOT</version>
+	<version>2.1.1-SNAPSHOT</version>
 	<name>ConfirmDialog</name>
 	<description>The ConfirmDialog add-on provides you a configurable way of requesting user 
         confirmation for a button click or some other some operation. </description>
@@ -11,7 +11,8 @@
 		<!-- ZIP Manifest fields -->
 		<Implementation-Version>${project.version}</Implementation-Version>
 		<!-- Must not change this because of the Directory -->
-		<Implementation-Title>${project.name}</Implementation-Title>
+                <vaadin.version>7.3.0.rc1</vaadin.version>
+                <Implementation-Title>${project.name}</Implementation-Title>
 		<Implementation-Vendor>Run Uilder</Implementation-Vendor>
 		<Vaadin-License-Title>Apache License 2.0</Vaadin-License-Title>
 		<Vaadin-Addon>${artifactId}-${project.version}.jar</Vaadin-Addon>
@@ -21,18 +22,18 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-server</artifactId>
-			<version>7.2-SNAPSHOT</version>
+			<version>${vaadin.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
-			<version>7.2-SNAPSHOT</version>
+			<version>${vaadin.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-client-compiled</artifactId>
-			<version>7.2-SNAPSHOT</version>
+			<version>${vaadin.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

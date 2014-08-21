@@ -24,7 +24,7 @@ import com.vaadin.testbench.elements.WindowElement;
 /**
  * WebDriver tests against the demo/example app.
  */
-public class TestConfirmDialog extends TestBenchTestCase {
+public class TestConfirmDialogValo extends TestBenchTestCase {
 
     private static WebDriver commonDriver;
 
@@ -171,7 +171,7 @@ public class TestConfirmDialog extends TestBenchTestCase {
      * @see #restartApplication()
      */
     protected void reloadPage() {
-        getDriver().get(UITestServer.getServerUrl());
+        getDriver().get(UITestServer.getServerUrl()+"?theme=valo");
     }
 
     /**
