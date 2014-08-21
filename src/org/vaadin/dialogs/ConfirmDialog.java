@@ -50,7 +50,7 @@ public class ConfirmDialog extends Window {
      *
      * By default the {@link DefaultConfirmDialogFactory} is used.
      *
-     * @return
+     * @return the currently used ConfirmDialog.Factory
      */
     public static ConfirmDialog.Factory getFactory() {
         if (factoryInstance == null) {
@@ -63,8 +63,9 @@ public class ConfirmDialog extends Window {
      * Set the ConfirmDialog.Factory used to create and configure the dialog.
      *
      * By default the {@link DefaultConfirmDialogFactory} is used.
+     * 
+     * @param newFactory the ConfirmDialog factory to be used
      *
-     * @return
      */
     public static void setFactory(final ConfirmDialog.Factory newFactory) {
         factoryInstance = newFactory;
@@ -73,8 +74,9 @@ public class ConfirmDialog extends Window {
     /**
      * Show a modal ConfirmDialog in a window.
      *
-     * @param parentWindow
-     * @param listener
+     * @param ui the UI in which the dialog is to be show
+     * @param listener the listener to be notified
+     * @return the ConfirmDialog instance created
      */
     public static ConfirmDialog show(final UI ui, final Listener listener) {
         return show(ui, null, null, null, null, listener);
@@ -83,10 +85,10 @@ public class ConfirmDialog extends Window {
     /**
      * Show a modal ConfirmDialog in a window.
      *
-     * @param parentWindow
-     * @param messageLabel
-     * @param listener
-     * @return
+     * @param ui the UI in which the dialog is to be show
+     * @param message the message shown in the dialog
+     * @param listener the listener to be notified
+     * @return the ConfirmDialog instance created
      */
     public static ConfirmDialog show(final UI ui, final String message,
             final Listener listener) {
@@ -110,7 +112,7 @@ public class ConfirmDialog extends Window {
      *            Caption for notOK button.
      * @param listener
      *            Listener for dialog result.
-     * @return
+     * @return the ConfirmDialog instance created
      */
     public static ConfirmDialog show(final UI ui,
             final String windowCaption, final String message,
@@ -125,8 +127,8 @@ public class ConfirmDialog extends Window {
     /**
      * Show a modal ConfirmDialog in a window.
      *
-     * @param parentWindow
-     *            Main level window.
+     * @param ui
+     *            Main level UI.
      * @param windowCaption
      *            Caption for the confirmation dialog window.
      * @param message
@@ -137,7 +139,7 @@ public class ConfirmDialog extends Window {
      *            Caption for cancel button.
      * @param listener
      *            Listener for dialog result.
-     * @return
+     * @return the ConfirmDialog that was instantiated
      */
     public static ConfirmDialog show(final UI ui,
             final String windowCaption, final String message,
@@ -153,8 +155,8 @@ public class ConfirmDialog extends Window {
      * Shows a modal ConfirmDialog in given window and executes Runnable if OK
      * is chosen.
      *
-     * @param parentWindow
-     *            Main level window.
+     * @param ui
+     *            Main level UI.
      * @param windowCaption
      *            Caption for the confirmation dialog window.
      * @param message
@@ -165,7 +167,7 @@ public class ConfirmDialog extends Window {
      *            Caption for cancel button.
      * @param r
      *            Runnable to be run if confirmed
-     * @return
+     * @return the ConfirmDialog that was instantiated
      */
     public static ConfirmDialog show(final UI ui,
             final String windowCaption, final String message,
@@ -195,7 +197,9 @@ public class ConfirmDialog extends Window {
     /**
      * Show confirm dialog.
      *
-     * @param listener
+     * @param ui the UI in which the dialog should be shown
+     * @param listener the listener to be notified
+     * @param modal true if the dialog should be modal
      */
     public final void show(final UI ui, final Listener listener,
             final boolean modal) {
@@ -208,7 +212,7 @@ public class ConfirmDialog extends Window {
     /**
      * Did the user confirm the dialog.
      *
-     * @return
+     * @return true if user confirmed
      */
     public final boolean isConfirmed() {
         return isConfirmed != null && isConfirmed;
@@ -217,7 +221,7 @@ public class ConfirmDialog extends Window {
     /**
      * Did the user cancel the dialog.
      * 
-     * @return
+     * @return true if the dialog was canceled
      */
     public final boolean isCanceled() {
         return isConfirmed == null;
@@ -287,8 +291,8 @@ public class ConfirmDialog extends Window {
     /**
      * Format the messageLabel by maintaining text only.
      *
-     * @param text
-     * @return
+     * @param text the text to be formatted
+     * @return formatted text
      */
     protected final String formatDialogMessage(final String text) {
         return JsonPaintTarget.escapeXML(text).replaceAll("\n", "<br />");
@@ -299,7 +303,7 @@ public class ConfirmDialog extends Window {
      *
      * Note: this should only be called internally by the listeners.
      *
-     * @param isConfirmed
+     * @param confirmed true if dialog was confirmed
      */
     protected final void setConfirmed(final boolean confirmed) {
         isConfirmed = confirmed;

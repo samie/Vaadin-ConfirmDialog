@@ -88,6 +88,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         panel.setWidth("100%");
         panel.setHeight("100%");
         panel.setStyleName(Reindeer.PANEL_LIGHT);
+        panel.addStyleName("borderless"); // valo compatibility
         c.setExpandRatio(panel, 1f);
 
         // Always HTML, but escape
@@ -99,14 +100,8 @@ public class DefaultConfirmDialogFactory implements Factory {
 
         HorizontalLayout buttons = new HorizontalLayout();
         c.addComponent(buttons);
+        c.setComponentAlignment(buttons, Alignment.TOP_RIGHT);
         buttons.setSpacing(true);
-
-        buttons.setHeight("18px"); //TODO: Had to set in px for Vaadin 7
-        buttons.setWidth("100%");
-        Label spacer = new Label("");
-        buttons.addComponent(spacer);
-        spacer.setWidth("100%");
-        buttons.setExpandRatio(spacer, 1f);
 
         final Button cancel = new Button(cancelCaption != null ? cancelCaption
                 : DEFAULT_CANCEL_CAPTION);
@@ -114,10 +109,6 @@ public class DefaultConfirmDialogFactory implements Factory {
         cancel.setId(ConfirmDialog.CANCEL_ID);
         cancel.setClickShortcut(KeyCode.ESCAPE, null);
         buttons.addComponent(cancel);
-        if (threeWay)
-            buttons.setComponentAlignment(cancel, Alignment.MIDDLE_LEFT);
-        else
-            buttons.setComponentAlignment(cancel, Alignment.MIDDLE_RIGHT);
         confirm.setCancelButton(cancel);
 
         Button notOk = null;
@@ -126,7 +117,6 @@ public class DefaultConfirmDialogFactory implements Factory {
             notOk.setData(false);
             notOk.setId(ConfirmDialog.NOT_OK_ID);
             buttons.addComponent(notOk);
-            buttons.setComponentAlignment(notOk, Alignment.MIDDLE_RIGHT);
             confirm.setCancelButton(notOk);
         }
 
@@ -138,7 +128,6 @@ public class DefaultConfirmDialogFactory implements Factory {
         ok.setStyleName(Reindeer.BUTTON_DEFAULT);
         ok.focus();
         buttons.addComponent(ok);
-        buttons.setComponentAlignment(ok, Alignment.MIDDLE_RIGHT);
         confirm.setOkButton(ok);
 
         // Create a listener for buttons
@@ -190,7 +179,7 @@ public class DefaultConfirmDialogFactory implements Factory {
      *
      * @param message
      *            Message string
-     * @return
+     * @return approximate size for the dialog with given message
      */
     protected double[] getDialogDimensions(String message,
             ConfirmDialog.ContentMode style) {
@@ -235,7 +224,7 @@ public class DefaultConfirmDialogFactory implements Factory {
      *            The string to search for.
      * @param haystack
      *            The string to process.
-     * @return
+     * @return count of needles within a haystack
      */
     private static int count(final String needle, final String haystack) {
         int count = 0;
