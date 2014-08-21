@@ -179,7 +179,7 @@ public class DefaultConfirmDialogFactory implements Factory {
      *
      * @param message
      *            Message string
-     * @return
+     * @return approximate size for the dialog with given message
      */
     protected double[] getDialogDimensions(String message,
             ConfirmDialog.ContentMode style) {
@@ -224,7 +224,7 @@ public class DefaultConfirmDialogFactory implements Factory {
      *            The string to search for.
      * @param haystack
      *            The string to process.
-     * @return
+     * @return count of needles within a haystack
      */
     private static int count(final String needle, final String haystack) {
         int count = 0;
