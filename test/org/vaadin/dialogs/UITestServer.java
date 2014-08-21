@@ -14,6 +14,7 @@ import com.vaadin.server.UIClassSelectionEvent;
 import com.vaadin.server.UIProvider;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
+import org.vaadin.dialogs.test.ConfirmDialogTestUI;
 
 /**
  * Embedded Jetty test servlet container for testing a single UI class.
@@ -37,6 +38,10 @@ public class UITestServer extends Server {
         super(serverPort);
     }
 
+    public static void main(String... args) {
+        UITestServer.runUIServer(ConfirmDialogTestUI.class);
+    }
+
     @AfterClass
     public static void shutdown() {
         if (instance != null) {
@@ -58,7 +63,6 @@ public class UITestServer extends Server {
      * @param testUI
      * @param startEmbeddedJetty
      */
-
     public static void runUIServer(Class<? extends UI> testUI) {
         runUIServer(testUI, DEFAULT_SERVER_PORT);
     }
@@ -122,7 +126,7 @@ public class UITestServer extends Server {
                         private static final long serialVersionUID = 1L;
 
                         public void sessionInit(SessionInitEvent event)
-                                throws ServiceException {
+                        throws ServiceException {
                             event.getSession().addUIProvider(uiprovider);
                         }
                     });
@@ -132,7 +136,7 @@ public class UITestServer extends Server {
     public static String getServerUrl() {
         return "http://localhost:"
                 + (instance != null ? instance.getConnectors()[0].getPort()
-                        : DEFAULT_SERVER_PORT);
+                : DEFAULT_SERVER_PORT);
     }
 
 }
