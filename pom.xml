@@ -10,14 +10,14 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin</artifactId>
-			<version>6.5.7</version>
+			<artifactId>vaadin-server</artifactId>
+			<version>7.2.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-servlet</artifactId>
-			<scope>test</scope>
 			<version>8.1.1.v20120215</version>
+            <scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
