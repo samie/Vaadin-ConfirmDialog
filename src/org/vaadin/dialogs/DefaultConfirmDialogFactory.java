@@ -53,6 +53,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         final boolean threeWay = notOkCaption != null;
         // Create a confirm dialog
         final ConfirmDialog confirm = new ConfirmDialog();
+        confirm.setCloseShortcut(KeyCode.ESCAPE);
         confirm.setId(ConfirmDialog.DIALOG_ID);
         confirm.setCaption(caption != null ? caption : DEFAULT_CAPTION);
 
@@ -107,7 +108,6 @@ public class DefaultConfirmDialogFactory implements Factory {
                 : DEFAULT_CANCEL_CAPTION);
         cancel.setData(null);
         cancel.setId(ConfirmDialog.CANCEL_ID);
-        cancel.setClickShortcut(KeyCode.ESCAPE, null);
         buttons.addComponent(cancel);
         confirm.setCancelButton(cancel);
 
@@ -124,7 +124,7 @@ public class DefaultConfirmDialogFactory implements Factory {
                 : DEFAULT_OK_CAPTION);
         ok.setData(true);
         ok.setId(ConfirmDialog.OK_ID);
-        ok.setClickShortcut(KeyCode.ENTER, null);
+        ok.setClickShortcut(KeyCode.ENTER);
         ok.setStyleName(Reindeer.BUTTON_DEFAULT);
         ok.focus();
         buttons.addComponent(ok);

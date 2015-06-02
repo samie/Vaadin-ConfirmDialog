@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -116,6 +117,24 @@ public class TestConfirmDialog extends TestBenchTestCase {
 
     }
 
+    /** Opens dialog and presses enter key. */
+    @Test
+    public void testEnterKey() {
+
+        // Open confirm dialog
+        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1);
+
+        // Get the dialog
+        WindowElement dialog = findConfirmDialog();
+
+        // Press enter key
+        dialog.getWrappedElement().findElement(By.className("v-scrollable")).sendKeys(Keys.ENTER);
+
+        // Assert notification value
+        assertTrue(findNotification().getText().contains("true"));
+
+    }
+
     /** Opens dialog and presses cancel. */
     @Test
     public void testCancel() {
@@ -133,7 +152,25 @@ public class TestConfirmDialog extends TestBenchTestCase {
         assertTrue(findNotification().getText().contains("false"));
 
     }
-    
+
+    /** Opens dialog and presses escape key. */
+    @Test
+    public void testEscapeKey() {
+
+        // Open confirm dialog
+        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1);
+
+        // Get the dialog
+        WindowElement dialog = findConfirmDialog();
+
+        // Press escape key
+        dialog.getWrappedElement().findElement(By.className("v-scrollable")).sendKeys(Keys.ESCAPE);
+
+        // Assert notification value
+        assertTrue(findNotification().getText().contains("false"));
+
+    }
+
     /** Opens dialog and presses cancel. */
     @Test
     public void testThreeWayOK() {
