@@ -11,7 +11,7 @@
 	<properties>
 		<!-- ZIP Manifest fields -->
 		<Implementation-Version>${project.version}</Implementation-Version>
-		<vaadin.version>7.3.5</vaadin.version>
+		<vaadin.version>7.5.0</vaadin.version>
 		<Implementation-Title>${project.name}</Implementation-Title>
 		<Implementation-Vendor>Run Uilder</Implementation-Vendor>
 		<Vaadin-License-Title>Apache License 2.0</Vaadin-License-Title>
@@ -48,7 +48,7 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-testbench</artifactId>
-			<version>4.0.1</version>
+			<version>4.0.3</version>
                         <scope>test</scope>
 		</dependency>
 		<dependency>
