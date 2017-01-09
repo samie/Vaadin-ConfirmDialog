@@ -142,7 +142,7 @@ public class TestConfirmDialog extends TestBenchTestCase {
         WindowElement dialog = findConfirmDialog();
 
         // Press enter key
-        dialog.getWrappedElement().findElement(By.className("v-scrollable")).sendKeys(Keys.ENTER);
+        dialog.getWrappedElement().sendKeys(Keys.ENTER);
 
         // Assert notification value
         assertTrue(findNotification().getText().contains("true"));
@@ -182,7 +182,7 @@ public class TestConfirmDialog extends TestBenchTestCase {
         WindowElement dialog = findConfirmDialog();
 
         // Press escape key
-        dialog.getWrappedElement().findElement(By.className("v-scrollable")).sendKeys(Keys.ESCAPE);
+        dialog.getWrappedElement().sendKeys(Keys.ESCAPE);
 
         // Assert notification value
         assertTrue(findNotification().getText().contains("false"));
@@ -276,8 +276,13 @@ public class TestConfirmDialog extends TestBenchTestCase {
     private WebElement findNotification() {
         List<WebElement> n = getDriver().findElements(
                 By.className("v-Notification"));
-        WebElement last = n.get(n.size() - 1);
-        return last;
+        if (n.size() >0 ) {
+            WebElement last = n.get(n.size() - 1);
+            return last;            
+        } else {
+            return null;
+        }
+        
     }
 
     /**

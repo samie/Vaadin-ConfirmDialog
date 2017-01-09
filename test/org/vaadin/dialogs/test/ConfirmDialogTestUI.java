@@ -90,7 +90,7 @@ public class ConfirmDialogTestUI extends UI {
         button.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 // The quickest way to confirm
-                ConfirmDialog.show(getUI(), "blob", MESSAGE_1, "foo", "cancel",
+                ConfirmDialog.show(getUI(), "Title", MESSAGE_1, "foo", "cancel",
                         "bar", new ConfirmDialog.Listener() {
 
                     public void onClose(ConfirmDialog dialog) {
