@@ -1,6 +1,6 @@
 package org.vaadin.dialogs;
 
-import static org.junit.Assert.assertNotNull;
+import com.machinepublishers.jbrowserdriver.JBrowserDriver;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -14,7 +14,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.vaadin.dialogs.test.ConfirmDialogTestUI;
 
 import com.vaadin.testbench.TestBench;
@@ -22,33 +21,40 @@ import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.elements.ButtonElement;
 import com.vaadin.testbench.elements.LabelElement;
 import com.vaadin.testbench.elements.WindowElement;
+import org.eclipse.jetty.server.Server;
+import org.vaadin.addonhelpers.TServer;
 
 /**
  * WebDriver tests against the demo/example app.
  */
 public class TestConfirmDialog extends TestBenchTestCase {
 
+    // host and port configuration for the URL
+    private static int PORT = 8889;
+    private static String URL = "http://localhost:" + PORT + "/" + ConfirmDialogTestUI.class.getName();
+
     private static WebDriver commonDriver;
+    private static Server server;
 
     @BeforeClass
-    public static void beforeAllTests() {
+    public static void beforeAllTests() throws Exception {
         // Start the server
-        UITestServer.runUIServer(ConfirmDialogTestUI.class);
+        server = new TServer().startServer(PORT);
 
         // Create a single webdriver
-        commonDriver = TestBench.createDriver(new FirefoxDriver());
+        commonDriver = TestBench.createDriver(new JBrowserDriver());
         commonDriver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
     }
 
     @AfterClass
-    public static void afterAllTests() {
+    public static void afterAllTests() throws Exception {
         // Stop the browser
         if (commonDriver != null) {
             commonDriver.quit();
         }
 
         // Stop the server
-        UITestServer.shutdown();
+        server.stop();
     }
 
     @Before
@@ -61,7 +67,9 @@ public class TestConfirmDialog extends TestBenchTestCase {
         reloadPage();
     }
 
-    /** Opens dialog and presses cancel and true. */
+    /**
+     * Opens dialog and presses cancel and true.
+     */
     @Test
     public void testTextContent() {
 
@@ -80,7 +88,9 @@ public class TestConfirmDialog extends TestBenchTestCase {
 
     }
 
-    /** Test that dialog works with empty (null) content. */
+    /**
+     * Test that dialog works with empty (null) content.
+     */
     @Test
     public void testEmptyTextContent() {
 
@@ -99,7 +109,9 @@ public class TestConfirmDialog extends TestBenchTestCase {
         clickButton(ConfirmDialog.CANCEL_ID, dialog);
     }
 
-    /** Opens dialog and presses ok. */
+    /**
+     * Opens dialog and presses ok.
+     */
     @Test
     public void testOk() {
 
@@ -117,7 +129,9 @@ public class TestConfirmDialog extends TestBenchTestCase {
 
     }
 
-    /** Opens dialog and presses enter key. */
+    /**
+     * Opens dialog and presses enter key.
+     */
     @Test
     public void testEnterKey() {
 
@@ -135,7 +149,9 @@ public class TestConfirmDialog extends TestBenchTestCase {
 
     }
 
-    /** Opens dialog and presses cancel. */
+    /**
+     * Opens dialog and presses cancel.
+     */
     @Test
     public void testCancel() {
 
@@ -153,7 +169,9 @@ public class TestConfirmDialog extends TestBenchTestCase {
 
     }
 
-    /** Opens dialog and presses escape key. */
+    /**
+     * Opens dialog and presses escape key.
+     */
     @Test
     public void testEscapeKey() {
 
@@ -171,7 +189,9 @@ public class TestConfirmDialog extends TestBenchTestCase {
 
     }
 
-    /** Opens dialog and presses cancel. */
+    /**
+     * Opens dialog and presses cancel.
+     */
     @Test
     public void testThreeWayOK() {
 
@@ -180,7 +200,7 @@ public class TestConfirmDialog extends TestBenchTestCase {
 
         // Get the dialog
         WindowElement dialog = findConfirmDialog();
-        
+
         // Click the ok button
         clickButton(ConfirmDialog.OK_ID, dialog);
 
@@ -188,8 +208,10 @@ public class TestConfirmDialog extends TestBenchTestCase {
         assertTrue(findNotification().getText().contains("Confirmed:true"));
         assertTrue(findNotification().getText().contains("Canceled:false"));
     }
-    
-    /** Opens dialog and presses cancel. */
+
+    /**
+     * Opens dialog and presses cancel.
+     */
     @Test
     public void testThreeWayCancel() {
 
@@ -198,7 +220,7 @@ public class TestConfirmDialog extends TestBenchTestCase {
 
         // Get the dialog
         WindowElement dialog = findConfirmDialog();
-        
+
         // Click the cancel button
         clickButton(ConfirmDialog.CANCEL_ID, dialog);
 
@@ -207,8 +229,9 @@ public class TestConfirmDialog extends TestBenchTestCase {
         assertTrue(findNotification().getText().contains("Canceled:true"));
     }
 
-
-    /** Opens dialog and presses cancel. */
+    /**
+     * Opens dialog and presses cancel.
+     */
     @Test
     public void testThreeWayNotOK() {
 
@@ -217,7 +240,7 @@ public class TestConfirmDialog extends TestBenchTestCase {
 
         // Get the dialog
         WindowElement dialog = findConfirmDialog();
-        
+
         // Click the not_ok button
         clickButton(ConfirmDialog.NOT_OK_ID, dialog);
 
@@ -264,7 +287,8 @@ public class TestConfirmDialog extends TestBenchTestCase {
      * @see #restartApplication()
      */
     protected void reloadPage() {
-        getDriver().get(UITestServer.getServerUrl());
+
+        getDriver().get(URL);
     }
 
     /**
@@ -273,7 +297,7 @@ public class TestConfirmDialog extends TestBenchTestCase {
      * @see #reloadPage()
      */
     protected void restartApplication() {
-        getDriver().get(UITestServer.getServerUrl() + "?restartApplication");
+        getDriver().get(URL + "?restartApplication");
     }
 
 }

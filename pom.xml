@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.vaadin.addon</groupId>
     <artifactId>confirmdialog</artifactId>
-    <version>3.1.4-SNAPSHOT</version>
+    <version>3.1.0-SNAPSHOT</version>
     <name>ConfirmDialog</name>
     <packaging>bundle</packaging>
     <description>The ConfirmDialog add-on provides you a configurable way of requesting user 
@@ -36,12 +36,6 @@
             <version>${vaadin.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-servlet</artifactId>
-            <version>9.4.0.v20161208</version>
-            <scope>test</scope>
-        </dependency>
         <!-- We use Vaadin TestBench instaed <dependency> <groupId>org.seleniumhq.selenium</groupId> 
         <artifactId>selenium-firefox-driver</artifactId> <version>2.39.0</version> 
         <scope>test</scope> </dependency> -->
@@ -56,6 +50,33 @@
             <artifactId>junit</artifactId>
             <version>4.9</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.vaadin</groupId>
+            <artifactId>addon-test-helpers</artifactId>
+            <version>2.0.alpha3</version>
+            <scope>test</scope>
+            <type>jar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-java</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.machinepublishers</groupId>
+            <artifactId>jbrowserdriver</artifactId>
+            <version>0.17.1</version>
+            <scope>test</scope>
+            <type>jar</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.0</version>
+            <scope>test</scope>            
         </dependency>
     </dependencies>
 
