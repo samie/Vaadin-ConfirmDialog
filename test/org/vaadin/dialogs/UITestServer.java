@@ -135,7 +135,7 @@ public class UITestServer extends Server {
 
     public static String getServerUrl() {
         return "http://localhost:"
-                + (instance != null ? instance.getConnectors()[0].getPort()
+                + (instance != null ? instance.getConnectors()[0].getName()
                 : DEFAULT_SERVER_PORT);
     }
 
