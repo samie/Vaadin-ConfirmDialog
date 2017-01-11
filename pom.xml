@@ -38,6 +38,12 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-server</artifactId>
             <version>${vaadin.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.vaadin</groupId>
+                    <artifactId>vaadin-sass-compiler</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
@@ -59,6 +65,12 @@
             <artifactId>vaadin-testbench</artifactId>
             <version>4.0.3</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-firefox-driver</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -250,5 +262,37 @@
             <url>https://maven.vaadin.com/vaadin-prereleases</url>
         </pluginRepository>
     </pluginRepositories>
+
+    <profiles>
+        <profile>
+            <id>run-testbench</id>
+            <activation>
+                <file>
+                    <exists>${user.home}/.vaadin.testbench.developer.license</exists>
+                </file>
+                <property>
+                    <name>!vaadin.testbench.developer.license</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>            
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>2.19.1</version>
+                        <executions>
+                            <execution>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                            </execution>
+                        </executions>
+                    </plugin>       
+                </plugins>
+            </build>     
+            
+        </profile>
+    </profiles>
 
 </project>
