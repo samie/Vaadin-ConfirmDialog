@@ -271,7 +271,7 @@
                     <exists>${user.home}/.vaadin.testbench.developer.license</exists>
                 </file>
                 <property>
-                    <name>!vaadin.testbench.developer.license</name>
+                    <name>vaadin.testbench.developer.license</name>
                 </property>
             </activation>
             <build>

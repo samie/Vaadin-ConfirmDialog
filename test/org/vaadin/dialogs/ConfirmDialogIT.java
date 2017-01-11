@@ -23,11 +23,14 @@ import com.vaadin.testbench.elements.LabelElement;
 import com.vaadin.testbench.elements.WindowElement;
 import org.eclipse.jetty.server.Server;
 import org.vaadin.addonhelpers.TServer;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 /**
  * WebDriver tests against the demo/example app.
  */
-public class TestConfirmDialog extends TestBenchTestCase {
+public class ConfirmDialogIT extends TestBenchTestCase {
 
     // host and port configuration for the URL
     private static int PORT = 8889;
