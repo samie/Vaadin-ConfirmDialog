@@ -177,8 +177,8 @@ public class DefaultConfirmDialogFactory implements Factory {
     /**
      * Approximates the dialog dimensions based on its message length.
      *
-     * @param message
-     *            Message string
+     * @param message the message string
+     * @param style the content mode
      * @return approximate size for the dialog with given message
      */
     protected double[] getDialogDimensions(String message,
