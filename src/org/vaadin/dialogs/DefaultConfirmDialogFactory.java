@@ -93,7 +93,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         c.setExpandRatio(panel, 1f);
 
         // Always HTML, but escape
-        Label text = new Label("", com.vaadin.shared.ui.label.ContentMode.HTML);
+        Label text = new Label("", com.vaadin.shared.ui.ContentMode.HTML);
         text.setId(ConfirmDialog.MESSAGE_ID);
         scrollContent.addComponent(text);
         confirm.setMessageLabel(text);
@@ -177,8 +177,8 @@ public class DefaultConfirmDialogFactory implements Factory {
     /**
      * Approximates the dialog dimensions based on its message length.
      *
-     * @param message
-     *            Message string
+     * @param message the message string
+     * @param style the content mode
      * @return approximate size for the dialog with given message
      */
     protected double[] getDialogDimensions(String message,
