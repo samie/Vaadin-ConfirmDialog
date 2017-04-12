@@ -94,6 +94,7 @@ public class DefaultConfirmDialogFactory implements Factory {
 
         // Always HTML, but escape
         Label text = new Label("", com.vaadin.shared.ui.ContentMode.HTML);
+        text.setWidth(100, com.vaadin.server.Sizeable.Unit.PERCENTAGE);
         text.setId(ConfirmDialog.MESSAGE_ID);
         scrollContent.addComponent(text);
         confirm.setMessageLabel(text);
