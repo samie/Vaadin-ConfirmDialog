@@ -46,11 +46,8 @@ public class DefaultConfirmDialogFactory implements Factory {
     private static final double MAX_HEIGHT = 30d;
     private static final double BUTTON_HEIGHT = 2.5;
 
-    @Override
-    public ConfirmDialog create(final String caption,
-            final String message,
-            final String okCaption,
-            final String cancelCaption,
+    public ConfirmDialog create(final String caption, final String message,
+            final String okCaption, final String cancelCaption,
             final String notOkCaption) {
 
         final boolean threeWay = notOkCaption != null;
@@ -65,7 +62,6 @@ public class DefaultConfirmDialogFactory implements Factory {
 
             private static final long serialVersionUID = 1971800928047045825L;
 
-            @Override
             public void windowClose(CloseEvent ce) {
 
                 // Only process if still enabled
@@ -88,7 +84,6 @@ public class DefaultConfirmDialogFactory implements Factory {
 
         // Panel for scrolling lengthy messages.
         VerticalLayout scrollContent = new VerticalLayout();
-        scrollContent.setMargin(false);
         Panel panel = new Panel(scrollContent);
         c.addComponent(panel);
         panel.setWidth("100%");
@@ -109,7 +104,8 @@ public class DefaultConfirmDialogFactory implements Factory {
         c.setComponentAlignment(buttons, Alignment.TOP_RIGHT);
         buttons.setSpacing(true);
 
-        final Button cancel = new Button(cancelCaption != null ? cancelCaption : DEFAULT_CANCEL_CAPTION);
+        final Button cancel = new Button(cancelCaption != null ? cancelCaption
+                : DEFAULT_CANCEL_CAPTION);
         cancel.setData(null);
         cancel.setId(ConfirmDialog.CANCEL_ID);
         buttons.addComponent(cancel);
@@ -124,7 +120,8 @@ public class DefaultConfirmDialogFactory implements Factory {
             confirm.setCancelButton(notOk);
         }
 
-        final Button ok = new Button(okCaption != null ? okCaption : DEFAULT_OK_CAPTION);
+        final Button ok = new Button(okCaption != null ? okCaption
+                : DEFAULT_OK_CAPTION);
         ok.setData(true);
         ok.setId(ConfirmDialog.OK_ID);
         ok.setClickShortcut(KeyCode.ENTER);
@@ -137,7 +134,6 @@ public class DefaultConfirmDialogFactory implements Factory {
         Button.ClickListener cb = new Button.ClickListener() {
             private static final long serialVersionUID = 3525060915814334881L;
 
-            @Override
             public void buttonClick(ClickEvent event) {
                 // Copy the button date to window for passing through either
                 // "OK" or "CANCEL". Only process id still enabled.
@@ -145,9 +141,8 @@ public class DefaultConfirmDialogFactory implements Factory {
                     confirm.setEnabled(false); // Avoid double processing
 
                     Button b = event.getButton();
-                    if (b != cancel) {
+                    if (b != cancel)
                         confirm.setConfirmed(b == ok);
-                    }
 
                     // We need to cast this way, because of the backward
                     // compatibility issue in 6.4 series.
@@ -166,12 +161,12 @@ public class DefaultConfirmDialogFactory implements Factory {
         };
         cancel.addClickListener(cb);
         ok.addClickListener(cb);
-        if (notOk != null) {
+        if (notOk != null)
             notOk.addClickListener(cb);
-        }
 
         // Approximate the size of the dialog
-        double[] dim = getDialogDimensions(message, ConfirmDialog.ContentMode.TEXT_WITH_NEWLINES);
+        double[] dim = getDialogDimensions(message,
+                ConfirmDialog.ContentMode.TEXT_WITH_NEWLINES);
         confirm.setWidth(format(dim[0]) + "em");
         confirm.setHeight(format(dim[1]) + "em");
         confirm.setResizable(false);
@@ -182,27 +177,26 @@ public class DefaultConfirmDialogFactory implements Factory {
     /**
      * Approximates the dialog dimensions based on its message length.
      *
-     * @param message
-     *            the message string
-     * @param style
-     *            the content mode
+     * @param message the message string
+     * @param style the content mode
      * @return approximate size for the dialog with given message
      */
-    protected double[] getDialogDimensions(String message, ConfirmDialog.ContentMode style) {
+    protected double[] getDialogDimensions(String message,
+            ConfirmDialog.ContentMode style) {
 
         // Based on Reindeer style:
         double chrW = 0.51d;
         double chrH = 1.5d;
-        double length = message != null ? chrW * message.length() : 0;
+        double length = message != null? chrW * message.length() : 0;
         double rows = Math.ceil(length / MAX_WIDTH);
 
         // Estimate extra lines
         if (style == ConfirmDialog.ContentMode.TEXT_WITH_NEWLINES) {
-            rows += message != null ? count("\n", message) : 0;
+            rows += message != null? count("\n", message): 0;
         }
 
-        // System.out.println(message.length() + " = " + length + "em");
-        // System.out.println("Rows: " + (length / MAX_WIDTH) + " = " + rows);
+        //System.out.println(message.length() + " = " + length + "em");
+        //System.out.println("Rows: " + (length / MAX_WIDTH) + " = " + rows);
 
         // Obey maximum size
         double width = Math.min(MAX_WIDTH, length);
@@ -217,8 +211,9 @@ public class DefaultConfirmDialogFactory implements Factory {
         double vmargin = 5d;
         double hmargin = 1d;
 
-        double[] res = new double[] { width + hmargin, height + btnHeight + vmargin };
-        // System.out.println(res[0] + "," + res[1]);
+        double[] res = new double[] { width + hmargin,
+                height + btnHeight + vmargin };
+        //System.out.println(res[0] + "," + res[1]);
         return res;
     }
 
