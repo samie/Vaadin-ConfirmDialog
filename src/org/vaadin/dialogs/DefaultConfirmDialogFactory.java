@@ -1,6 +1,8 @@
 package org.vaadin.dialogs;
 
 import java.text.NumberFormat;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import org.vaadin.dialogs.ConfirmDialog.Factory;
@@ -104,31 +106,14 @@ public class DefaultConfirmDialogFactory implements Factory {
         c.setComponentAlignment(buttons, Alignment.TOP_RIGHT);
         buttons.setSpacing(true);
 
-        final Button cancel = new Button(cancelCaption != null ? cancelCaption
-                : DEFAULT_CANCEL_CAPTION);
-        cancel.setData(null);
-        cancel.setId(ConfirmDialog.CANCEL_ID);
-        buttons.addComponent(cancel);
-        confirm.setCancelButton(cancel);
+        final Button cancel = buildCancelButton(cancelCaption);
 
         Button notOk = null;
         if (threeWay) {
-            notOk = new Button(notOkCaption);
-            notOk.setData(false);
-            notOk.setId(ConfirmDialog.NOT_OK_ID);
-            buttons.addComponent(notOk);
-            confirm.setCancelButton(notOk);
+            notOk = buildNotOkButton(notOkCaption);
         }
 
-        final Button ok = new Button(okCaption != null ? okCaption
-                : DEFAULT_OK_CAPTION);
-        ok.setData(true);
-        ok.setId(ConfirmDialog.OK_ID);
-        ok.setClickShortcut(KeyCode.ENTER);
-        ok.setStyleName(ValoTheme.BUTTON_PRIMARY);
-        ok.focus();
-        buttons.addComponent(ok);
-        confirm.setOkButton(ok);
+        final Button ok = buildOkButton(okCaption);
 
         // Create a listener for buttons
         Button.ClickListener cb = new Button.ClickListener() {
@@ -164,6 +149,12 @@ public class DefaultConfirmDialogFactory implements Factory {
         if (notOk != null)
             notOk.addClickListener(cb);
 
+        for (Button button : orderButtons(cancel, notOk, ok)) {
+            if (button != null) {
+                buttons.addComponent(button);
+            }
+        }
+
         // Approximate the size of the dialog
         double[] dim = getDialogDimensions(message,
                 ConfirmDialog.ContentMode.TEXT_WITH_NEWLINES);
@@ -175,10 +166,77 @@ public class DefaultConfirmDialogFactory implements Factory {
     }
 
     /**
+     * This method allows overwriting the button order. It's provided with all
+     * three buttons of the dialog (out of which some can be null) and it
+     * returns a list of buttons in wanted order. This method can be overwritten to change the order of the buttons.
+     * 
+     * @param cancel
+     * @param notOk
+     * @param ok
+     * @return List of buttons in defined order.
+     */
+    protected List<Button> orderButtons(Button cancel, Button notOk,
+            Button ok) {
+        return Arrays.asList(cancel, notOk, ok);
+    }
+
+    /**
+     * Builds new cancel button. This method can be used to overwrite the button
+     * building.
+     * 
+     * @param cancelCaption
+     * @return Button for cancel
+     */
+    protected Button buildCancelButton(String cancelCaption) {
+        final Button cancel = new Button(
+                cancelCaption != null ? cancelCaption : DEFAULT_CANCEL_CAPTION);
+        cancel.setData(null);
+        cancel.setId(ConfirmDialog.CANCEL_ID);
+
+        return cancel;
+    }
+
+    /**
+     * Builds new "Not ok" button. This method can be used to overwrite the
+     * button building.
+     * 
+     * @param notOkCaption
+     * @return Button for "Not ok"
+     */
+    protected Button buildNotOkButton(String notOkCaption) {
+        final Button notOk = new Button(notOkCaption);
+        notOk.setData(false);
+        notOk.setId(ConfirmDialog.NOT_OK_ID);
+
+        return notOk;
+    }
+
+    /**
+     * Builds new Ok button. This method can be used to overwrite the button
+     * building.
+     * 
+     * @param okCaption
+     * @return Button for Ok
+     */
+    protected Button buildOkButton(String okCaption) {
+        final Button ok = new Button(
+                okCaption != null ? okCaption : DEFAULT_OK_CAPTION);
+        ok.setData(true);
+        ok.setId(ConfirmDialog.OK_ID);
+        ok.setClickShortcut(KeyCode.ENTER);
+        ok.setStyleName(ValoTheme.BUTTON_PRIMARY);
+        ok.focus();
+
+        return ok;
+    }
+
+    /**
      * Approximates the dialog dimensions based on its message length.
      *
-     * @param message the message string
-     * @param style the content mode
+     * @param message
+     *            the message string
+     * @param style
+     *            the content mode
      * @return approximate size for the dialog with given message
      */
     protected double[] getDialogDimensions(String message,
@@ -187,16 +245,16 @@ public class DefaultConfirmDialogFactory implements Factory {
         // Based on Reindeer style:
         double chrW = 0.51d;
         double chrH = 1.5d;
-        double length = message != null? chrW * message.length() : 0;
+        double length = message != null ? chrW * message.length() : 0;
         double rows = Math.ceil(length / MAX_WIDTH);
 
         // Estimate extra lines
         if (style == ConfirmDialog.ContentMode.TEXT_WITH_NEWLINES) {
-            rows += message != null? count("\n", message): 0;
+            rows += message != null ? count("\n", message) : 0;
         }
 
-        //System.out.println(message.length() + " = " + length + "em");
-        //System.out.println("Rows: " + (length / MAX_WIDTH) + " = " + rows);
+        // System.out.println(message.length() + " = " + length + "em");
+        // System.out.println("Rows: " + (length / MAX_WIDTH) + " = " + rows);
 
         // Obey maximum size
         double width = Math.min(MAX_WIDTH, length);
@@ -213,7 +271,7 @@ public class DefaultConfirmDialogFactory implements Factory {
 
         double[] res = new double[] { width + hmargin,
                 height + btnHeight + vmargin };
-        //System.out.println(res[0] + "," + res[1]);
+        // System.out.println(res[0] + "," + res[1]);
         return res;
     }
 
