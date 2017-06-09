@@ -1,14 +1,19 @@
 = ConfirmationDialog =
 
-ConfirmDialog for Vaadin is available as jar/Maven from [[https://vaadin.com/directory#addon/confirmdialog:vaadin=7|Vaadin Directory]]
-
 Ever needed a present a confirmation dialog in a Vaadin application?
+Here is a way to do it easily. ConfirmDialog add-on provides you with a configurable way of requesting user confirmation for a button click or some other some operation.
 
-Here is a way to do it nicely. The ConfirmDialog add-on provides you with a configurable way of requesting user confirmation for a button click or some other some operation. 
+ConfirmDialog for Vaadin is available as jar download/Maven from [[https://vaadin.com/directory#addon/confirmdialog:vaadin=7|Vaadin Directory]]
 
-Defaults like size calculation, keyboard bindings and styling are all there, but of course you can provide your own. Take a look at the demo application for sample code and use cases.
+Defaults like size calculation, keyboard bindings and styling are all there, but of course you can provide your own.
+Take a look at the demo application for sample code and use cases.
 
-Currently only two-way (yes,no) confirmation is supported. Vote for three-way (yes,no,cancel) if you need it. And for "monolog box" use the Vaadin's own showNotification method. 
+Highlights:
+ * Two-way confirmation (yes, no)
+ * Three way confirmation (yes, no, cancel)
+ * Automatic size calculation based on content length
+ * Keyboard navigation
+ * Reordering the buttons
 
 This is a server-side-only component, so no need to recompile the widgetset.
 
@@ -16,20 +21,18 @@ This is a server-side-only component, so no need to recompile the widgetset.
 
 {{{
 
-    	Button button = new Button("Basic");
-    	button.setId("basic");
-    	button.addClickListener(e -> {
-    			// The quickest way to confirm
-    			ConfirmDialog.show(getUI(), "Are you sure?", dialog -> {
-    			                if (dialog.isConfirmed()) {
-    			                    // Confirmed to continue
-    								// DO STUFF
-    			                } else {
-    			                    // User did not confirm
-    								// CANCEL STUFF
-    			                }
-    			        });    		
-    	});
+Button button = new Button("Dangerous action");
+button.addClickListener(e -> {
+
+    // Present the confirmation dialog in the button click handler
+    ConfirmDialog.show(getUI(), "Are you sure?", dialog -> {
+            if (dialog.isConfirmed()) {
+                // Confirmed to continue
+            } else {
+                // User did not confirm
+            }
+        });
+});
 
 }}}
 
