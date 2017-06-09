@@ -10,6 +10,9 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import org.vaadin.dialogs.DefaultConfirmDialogFactory;
+
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class ConfirmDialogTestUI extends UI {
@@ -31,6 +34,7 @@ public class ConfirmDialogTestUI extends UI {
         addBasicExample();
         addNullMessageExample();
         addThreeWayExample();
+        addButtonSwapExample();
     }
 
     private void addComponent(Component c) {
@@ -98,6 +102,38 @@ public class ConfirmDialogTestUI extends UI {
                                     + dialog.isConfirmed()+" Canceled:"+dialog.isCanceled());
                     }
                 });
+            }
+        });
+        addComponent(button);
+    }
+
+    private void addButtonSwapExample() {
+        Button button = new Button("Click " + OPEN_BUTTON_3);
+
+        button.setId(OPEN_BUTTON_3);
+        button.addClickListener(new Button.ClickListener() {
+            public void buttonClick(ClickEvent event) {
+
+                ConfirmDialog.Factory currentFactory = ConfirmDialog.getFactory();
+                ConfirmDialog.setFactory(new DefaultConfirmDialogFactory() {
+
+                    @Override
+                    protected List<Button> orderButtons(Button cancel, Button notOk, Button ok) {
+                        return super.orderButtons(cancel, ok, notOk);
+                    }
+                });
+
+                // The quickest way to confirm
+                ConfirmDialog.show(getUI(), "Title", MESSAGE_1, "foo", "cancel",
+                        "bar", new ConfirmDialog.Listener() {
+
+                            public void onClose(ConfirmDialog dialog) {
+                                Notification.show("Confirmed:"
+                                        + dialog.isConfirmed()+" Canceled:"+dialog.isCanceled());
+                            }
+                        });
+
+                ConfirmDialog.setFactory(currentFactory);
             }
         });
         addComponent(button);
