@@ -3,7 +3,7 @@
 Ever needed a present a confirmation dialog in a Vaadin application?
 Here is a way to do it easily. ConfirmDialog add-on provides you with a configurable way of requesting user confirmation for a button click or some other some operation.
 
-ConfirmDialog for Vaadin is available as jar download/Maven from [[https://vaadin.com/directory#addon/confirmdialog:vaadin=7|Vaadin Directory]]
+ConfirmDialog for Vaadin is available as jar download/Maven from [[https://vaadin.com/addon/confirmdialog|Vaadin Directory]]
 
 Defaults like size calculation, keyboard bindings and styling are all there, but of course you can provide your own.
 Take a look at the demo application for sample code and use cases.
