@@ -86,6 +86,7 @@ public class DefaultConfirmDialogFactory implements Factory {
 
         // Panel for scrolling lengthy messages.
         VerticalLayout scrollContent = new VerticalLayout();
+        scrollContent.setMargin(false);        
         Panel panel = new Panel(scrollContent);
         c.addComponent(panel);
         panel.setWidth("100%");
