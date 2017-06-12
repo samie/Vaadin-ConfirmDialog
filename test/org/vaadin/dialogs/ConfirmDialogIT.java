@@ -84,7 +84,7 @@ public class ConfirmDialogIT extends TestBenchTestCase {
         // Assert message content in dialog
         String text = $(LabelElement.class).context(dialog)
                 .id(ConfirmDialog.MESSAGE_ID).getText();
-        assertTrue(text.equals(ConfirmDialogTestUI.MESSAGE_1));
+        assertTrue(text.equals(ConfirmDialogTestUI.MESSAGE_1_SHORT));
 
         // Click the cancel button in dialog
         clickButton(ConfirmDialog.CANCEL_ID, dialog);
@@ -263,7 +263,6 @@ public class ConfirmDialogIT extends TestBenchTestCase {
     /**
      * Find the the confirmation dialog.
      *
-     * @param d
      * @return WindowElement for the dialog
      */
     private WindowElement findConfirmDialog() {
@@ -273,7 +272,6 @@ public class ConfirmDialogIT extends TestBenchTestCase {
     /**
      * Get the last notification.
      *
-     * @param d
      * @return
      */
     private WebElement findNotification() {
