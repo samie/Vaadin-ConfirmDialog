@@ -172,9 +172,9 @@ public class DefaultConfirmDialogFactory implements Factory {
      * three buttons of the dialog (out of which some can be null) and it
      * returns a list of buttons in wanted order. This method can be overwritten to change the order of the buttons.
      * 
-     * @param cancel
-     * @param notOk
-     * @param ok
+     * @param cancel Button for canceling the dialog
+     * @param notOk Button for "not ok"
+     * @param ok Button for "ok"
      * @return List of buttons in defined order.
      */
     protected List<Button> orderButtons(Button cancel, Button notOk,
@@ -186,7 +186,7 @@ public class DefaultConfirmDialogFactory implements Factory {
      * Builds new cancel button. This method can be used to overwrite the button
      * building.
      * 
-     * @param cancelCaption
+     * @param cancelCaption Caption for the dialog cancel button
      * @return Button for cancel
      */
     protected Button buildCancelButton(String cancelCaption) {
@@ -202,7 +202,7 @@ public class DefaultConfirmDialogFactory implements Factory {
      * Builds new "Not ok" button. This method can be used to overwrite the
      * button building.
      * 
-     * @param notOkCaption
+     * @param notOkCaption Caption for the "not Ok" button
      * @return Button for "Not ok"
      */
     protected Button buildNotOkButton(String notOkCaption) {
@@ -217,7 +217,7 @@ public class DefaultConfirmDialogFactory implements Factory {
      * Builds new Ok button. This method can be used to overwrite the button
      * building.
      * 
-     * @param okCaption
+     * @param okCaption Caption for the Ok button
      * @return Button for Ok
      */
     protected Button buildOkButton(String okCaption) {
