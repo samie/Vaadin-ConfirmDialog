@@ -109,13 +109,16 @@ public class DefaultConfirmDialogFactory implements Factory {
         buttons.setSpacing(true);
 
         final Button cancel = buildCancelButton(cancelCaption);
+        confirm.setCancelButton(cancel);
 
         Button notOk = null;
         if (threeWay) {
             notOk = buildNotOkButton(notOkCaption);
+            confirm.setNotOkButton(notOk);
         }
 
         final Button ok = buildOkButton(okCaption);
+        confirm.setOkButton(ok);
 
         // Create a listener for buttons
         Button.ClickListener cb = new Button.ClickListener() {
