@@ -60,8 +60,7 @@ public class UITestServer extends Server {
      * This instantiates a UI, runs an UI instance in a embedded server on port
      * {@value #DEFAULT_SERVER_PORT}
      *
-     * @param testUI
-     * @param startEmbeddedJetty
+     * @param testUI Vaadin UI to be tested
      */
     public static void runUIServer(Class<? extends UI> testUI) {
         runUIServer(testUI, DEFAULT_SERVER_PORT);
@@ -72,9 +71,8 @@ public class UITestServer extends Server {
      *
      * This instantiates a UI, runs an UI instance in a embedded server.
      *
-     * @param testUI
-     * @param startEmbeddedJetty
-     * @param serverPort
+     * @param testUI Vaadin UI to be tested
+     * @param serverPort HTTP port
      */
     public static void runUIServer(Class<? extends UI> testUI, int serverPort) {
 
