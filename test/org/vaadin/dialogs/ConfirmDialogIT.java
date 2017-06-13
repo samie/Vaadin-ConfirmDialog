@@ -142,12 +142,8 @@ public class ConfirmDialogIT extends TestBenchTestCase {
         // Open confirm dialog
         clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1_SHORT);
 
-        // Get the dialog
-        WindowElement dialog = findConfirmDialog();
-        dialog.click();
-
         // Press enter key
-        dialog.sendKeys(Keys.ENTER);
+        getDriver().switchTo().activeElement().sendKeys(Keys.ENTER);
 
         // Assert notification value
         assertTrue(findNotification().getText().contains("true"));
@@ -163,11 +159,8 @@ public class ConfirmDialogIT extends TestBenchTestCase {
         // Open confirm dialog
         clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1_SHORT);
 
-        // Get the dialog
-        WindowElement dialog = findConfirmDialog();
-
         // Press escape key
-        dialog. sendKeys(Keys.ESCAPE);
+        getDriver().switchTo().activeElement().sendKeys(Keys.ESCAPE);
 
         // Assert notification value
         assertTrue(findNotification().getText().contains("false"));
