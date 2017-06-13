@@ -17,9 +17,12 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class ConfirmDialogTestUI extends UI {
 
-    public static final String OPEN_BUTTON_1 = "confirm_1";
-    public static final String OPEN_BUTTON_2 = "confirm_2";
-    public static final String OPEN_BUTTON_3 = "confirm_3";
+    public static final String OPEN_BUTTON_1_SHORT = "confirm_1";
+    public static final String OPEN_BUTTON_2_LONG = "confirm_2";
+    public static final String OPEN_BUTTON_3_HTML = "confirm_3";
+    public static final String OPEN_BUTTON_4_NULL = "confirm_4";
+    public static final String OPEN_BUTTON_5_3WAY = "confirm_5";
+    public static final String OPEN_BUTTON_6_SWAP = "confirm_6";
 
     public static final String MESSAGE_1_SHORT = "This is the question?";
     public static final String MESSAGE_2_LONG = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at turpis lectus. Phasellus magna nulla, fringilla et dui id, gravida elementum ligula. Aliquam dignissim tincidunt efficitur. Sed tincidunt sapien ut vehicula vehicula. Quisque faucibus vestibulum sem at facilisis. Nullam eros urna, consequat id nibh sed, suscipit eleifend metus. Ut congue dolor id nulla ultricies aliquam. Ut a lacinia orci. Donec congue sapien risus, semper consequat tortor pulvinar at. Nullam scelerisque, nibh et pretium cursus, lacus dolor bibendum eros, non volutpat magna elit quis dolor. Mauris vel tortor nulla. Fusce dapibus semper fermentum. Curabitur ac sagittis risus. In hac habitasse platea dictumst. Vestibulum iaculis fermentum orci, ultricies sodales dolor eleifend sed. Nulla accumsan, erat euismod sagittis eleifend, ex purus rutrum mi, vel accumsan quam sapien id erat." +
@@ -50,8 +53,8 @@ public class ConfirmDialogTestUI extends UI {
     }
 
     private void addBasicExample() {
-        Button button = new Button("Click " + OPEN_BUTTON_1);
-        button.setId(OPEN_BUTTON_1);
+        Button button = new Button("Click " + OPEN_BUTTON_1_SHORT);
+        button.setId(OPEN_BUTTON_1_SHORT);
         button.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 // The quickest way to confirm
@@ -74,8 +77,8 @@ public class ConfirmDialogTestUI extends UI {
     }
 
     private void addLongExample() {
-        Button button = new Button("Click " + OPEN_BUTTON_1);
-        button.setId(OPEN_BUTTON_1);
+        Button button = new Button("Click " + OPEN_BUTTON_2_LONG);
+        button.setId(OPEN_BUTTON_2_LONG);
         button.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 // The quickest way to confirm
@@ -98,12 +101,12 @@ public class ConfirmDialogTestUI extends UI {
     }
 
     private void addHtmlExample() {
-        Button button = new Button("Click " + OPEN_BUTTON_1);
-        button.setId(OPEN_BUTTON_1);
+        Button button = new Button("Click " + OPEN_BUTTON_3_HTML);
+        button.setId(OPEN_BUTTON_3_HTML);
         button.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 // The quickest way to confirm
-                ConfirmDialog.show(getUI(), MESSAGE_3_HTML,
+                ConfirmDialog d = ConfirmDialog.show(getUI(), MESSAGE_3_HTML,
                         new ConfirmDialog.Listener() {
 
                             public void onClose(ConfirmDialog dialog) {
@@ -116,14 +119,15 @@ public class ConfirmDialogTestUI extends UI {
                                 }
                             }
                         });
+                d.setContentMode(ConfirmDialog.ContentMode.HTML);
             }
         });
         addComponent(button);
     }
 
     private void addNullMessageExample() {
-        Button button = new Button("Click " + OPEN_BUTTON_2);
-        button.setId(OPEN_BUTTON_2);
+        Button button = new Button("Click " + OPEN_BUTTON_4_NULL);
+        button.setId(OPEN_BUTTON_4_NULL);
         button.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 // The quickest way to confirm
@@ -145,8 +149,8 @@ public class ConfirmDialogTestUI extends UI {
     }
 
     private void addThreeWayExample() {
-        Button button = new Button("Click " + OPEN_BUTTON_3);
-        button.setId(OPEN_BUTTON_3);
+        Button button = new Button("Click " + OPEN_BUTTON_5_3WAY);
+        button.setId(OPEN_BUTTON_5_3WAY);
         button.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 // The quickest way to confirm
@@ -164,9 +168,8 @@ public class ConfirmDialogTestUI extends UI {
     }
 
     private void addButtonSwapExample() {
-        Button button = new Button("Click " + OPEN_BUTTON_3);
-
-        button.setId(OPEN_BUTTON_3);
+        Button button = new Button("Click " + OPEN_BUTTON_6_SWAP);
+        button.setId(OPEN_BUTTON_6_SWAP);
         button.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
 

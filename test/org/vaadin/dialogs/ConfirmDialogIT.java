@@ -14,6 +14,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.vaadin.dialogs.test.ConfirmDialogTestUI;
 
 import com.vaadin.testbench.TestBench;
@@ -45,8 +46,8 @@ public class ConfirmDialogIT extends TestBenchTestCase {
         server = new TServer().startServer(PORT);
 
         // Create a single webdriver
-        commonDriver = TestBench.createDriver(new JBrowserDriver());
-        commonDriver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+        commonDriver = TestBench.createDriver(new ChromeDriver());
+        commonDriver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
     }
 
     @AfterClass
@@ -76,7 +77,7 @@ public class ConfirmDialogIT extends TestBenchTestCase {
     @Test
     public void testTextContent() {
 
-        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1);
+        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1_SHORT);
 
         // Get the dialog
         WindowElement dialog = findConfirmDialog();
@@ -98,7 +99,7 @@ public class ConfirmDialogIT extends TestBenchTestCase {
     public void testEmptyTextContent() {
 
         // Open confirm dialog
-        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_2);
+        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_4_NULL);
 
         // Get the dialog
         WindowElement dialog = findConfirmDialog();
@@ -119,7 +120,7 @@ public class ConfirmDialogIT extends TestBenchTestCase {
     public void testOk() {
 
         // Open confirm dialog
-        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1);
+        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1_SHORT);
 
         // Get the dialog
         WindowElement dialog = findConfirmDialog();
@@ -139,16 +140,37 @@ public class ConfirmDialogIT extends TestBenchTestCase {
     public void testEnterKey() {
 
         // Open confirm dialog
-        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1);
+        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1_SHORT);
+
+        // Get the dialog
+        WindowElement dialog = findConfirmDialog();
+        dialog.click();
+
+        // Press enter key
+        dialog.sendKeys(Keys.ENTER);
+
+        // Assert notification value
+        assertTrue(findNotification().getText().contains("true"));
+
+    }
+
+    /**
+     * Opens dialog and presses escape key.
+     */
+    @Test
+    public void testEscapeKey() {
+
+        // Open confirm dialog
+        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1_SHORT);
 
         // Get the dialog
         WindowElement dialog = findConfirmDialog();
 
-        // Press enter key
-        dialog.getWrappedElement().sendKeys(Keys.ENTER);
+        // Press escape key
+        dialog. sendKeys(Keys.ESCAPE);
 
         // Assert notification value
-        assertTrue(findNotification().getText().contains("true"));
+        assertTrue(findNotification().getText().contains("false"));
 
     }
 
@@ -159,7 +181,7 @@ public class ConfirmDialogIT extends TestBenchTestCase {
     public void testCancel() {
 
         // Open confirm dialog
-        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1);
+        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1_SHORT);
 
         // Get the dialog
         WindowElement dialog = findConfirmDialog();
@@ -172,25 +194,7 @@ public class ConfirmDialogIT extends TestBenchTestCase {
 
     }
 
-    /**
-     * Opens dialog and presses escape key.
-     */
-    @Test
-    public void testEscapeKey() {
 
-        // Open confirm dialog
-        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1);
-
-        // Get the dialog
-        WindowElement dialog = findConfirmDialog();
-
-        // Press escape key
-        dialog.getWrappedElement().sendKeys(Keys.ESCAPE);
-
-        // Assert notification value
-        assertTrue(findNotification().getText().contains("false"));
-
-    }
 
     /**
      * Opens dialog and presses cancel.
@@ -199,7 +203,7 @@ public class ConfirmDialogIT extends TestBenchTestCase {
     public void testThreeWayOK() {
 
         // Open confirm dialog
-        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_3);
+        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_5_3WAY);
 
         // Get the dialog
         WindowElement dialog = findConfirmDialog();
@@ -219,7 +223,7 @@ public class ConfirmDialogIT extends TestBenchTestCase {
     public void testThreeWayCancel() {
 
         // Open confirm dialog
-        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_3);
+        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_5_3WAY);
 
         // Get the dialog
         WindowElement dialog = findConfirmDialog();
@@ -239,7 +243,7 @@ public class ConfirmDialogIT extends TestBenchTestCase {
     public void testThreeWayNotOK() {
 
         // Open confirm dialog
-        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_3);
+        clickButton(ConfirmDialogTestUI.OPEN_BUTTON_5_3WAY);
 
         // Get the dialog
         WindowElement dialog = findConfirmDialog();
