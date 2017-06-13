@@ -190,6 +190,7 @@ public class ConfirmDialog extends Window {
     private Boolean isConfirmed = null;
     private Label messageLabel = null;
     private Button okBtn = null;
+    private Button notOkBtn = null;
     private Button cancelBtn = null;
     private String originalMessageText;
     private ContentMode msgContentMode = ContentMode.TEXT_WITH_NEWLINES;
@@ -229,6 +230,14 @@ public class ConfirmDialog extends Window {
 
     public final Listener getListener() {
         return confirmListener;
+    }
+
+    protected final void setNotOkButton(final Button notOkButton) {
+        notOkBtn = notOkButton;
+    }
+
+    public final Button getNotOkButton() {
+        return notOkBtn;
     }
 
     protected final void setOkButton(final Button okButton) {
