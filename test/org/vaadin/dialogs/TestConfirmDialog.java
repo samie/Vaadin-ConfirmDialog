@@ -238,7 +238,6 @@ public class TestConfirmDialog extends TestBenchTestCase {
     /**
      * Find the the confirmation dialog.
      *
-     * @param d
      * @return WindowElement for the dialog
      */
     private WindowElement findConfirmDialog() {
@@ -248,7 +247,6 @@ public class TestConfirmDialog extends TestBenchTestCase {
     /**
      * Get the last notification.
      *
-     * @param d
      * @return
      */
     private WebElement findNotification() {
