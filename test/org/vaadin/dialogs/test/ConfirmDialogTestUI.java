@@ -154,8 +154,8 @@ public class ConfirmDialogTestUI extends UI {
         button.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 // The quickest way to confirm
-                ConfirmDialog.show(getUI(), "Title", MESSAGE_1_SHORT, "foo", "cancel",
-                        "bar", new ConfirmDialog.Listener() {
+                ConfirmDialog.show(getUI(), "Title", MESSAGE_1_SHORT, "ok", "cancel",
+                        "not ok", new ConfirmDialog.Listener() {
 
                     public void onClose(ConfirmDialog dialog) {
                             Notification.show("Confirmed:"
@@ -183,8 +183,8 @@ public class ConfirmDialogTestUI extends UI {
                 });
 
                 // The quickest way to confirm
-                ConfirmDialog.show(getUI(), "Title", MESSAGE_1_SHORT, "foo", "cancel",
-                        "bar", new ConfirmDialog.Listener() {
+                ConfirmDialog.show(getUI(), "Title", MESSAGE_1_SHORT, "ok", "cancel",
+                        "not ok", new ConfirmDialog.Listener() {
 
                             public void onClose(ConfirmDialog dialog) {
                                 Notification.show("Confirmed:"
