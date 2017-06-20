@@ -96,7 +96,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         c.addComponent(buttons);
         buttons.setSpacing(true);
 
-        buttons.setHeight(format(BUTTON_HEIGHT) + "em");
+        buttons.setHeight(format(getButtonHeight()) + "em");
         buttons.setWidth("100%");
         Label spacer = new Label("");
         buttons.addComponent(spacer);
@@ -169,6 +169,10 @@ public class DefaultConfirmDialogFactory implements Factory {
         return confirm;
     }
 
+	protected double getButtonHeight() {
+		return BUTTON_HEIGHT;
+	}
+
     /**
      * Approximates the dialog dimensions based on its message length.
      *
@@ -182,7 +186,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         double chrW = 0.5d;
         double chrH = 1.5d;
         double length = chrW * message.length();
-        double rows = Math.ceil(length / MAX_WIDTH);
+        double rows = Math.ceil(length / getMaxWindowWidth());
 
         // Estimate extra lines
         if (style == ConfirmDialog.CONTENT_TEXT_WITH_NEWLINES) {
@@ -193,12 +197,12 @@ public class DefaultConfirmDialogFactory implements Factory {
         // System.out.println("Rows: " + (length / MAX_WIDTH) + " = " + rows);
 
         // Obey maximum size
-        double width = Math.min(MAX_WIDTH, length);
-        double height = Math.ceil(Math.min(MAX_HEIGHT, rows * chrH));
+        double width = Math.min(getMaxWindowWidth(), length);
+        double height = Math.ceil(Math.min(getMaxWindowHeight(), rows * chrH));
 
         // Obey the minimum size
-        width = Math.max(width, MIN_WIDTH);
-        height = Math.max(height, MIN_HEIGHT);
+        width = Math.max(width, getMinWindowWidth());
+        height = Math.max(height, getMinWindowHeight());
 
         // Based on Reindeer style:
         double btnHeight = 2.5d;
@@ -210,6 +214,22 @@ public class DefaultConfirmDialogFactory implements Factory {
         // System.out.println(res[0] + "," + res[1]);
         return res;
     }
+
+	protected double getMaxWindowWidth() {
+		return MAX_WIDTH;
+	}
+
+	protected double getMaxWindowHeight() {
+		return MAX_HEIGHT;
+	}
+
+	protected double getMinWindowHeight() {
+		return MIN_HEIGHT;
+	}
+
+	protected double getMinWindowWidth() {
+		return MIN_WIDTH;
+	}
 
     /**
      * Count the number of needles within a haystack.
