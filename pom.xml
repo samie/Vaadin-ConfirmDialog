@@ -8,17 +8,18 @@
     <description>The ConfirmDialog add-on provides you a configurable way of requesting user 
         confirmation for a button click or some other some operation. </description>
     <properties>
-        <!-- ZIP Manifest fields -->
-        <Implementation-Version>${project.version}</Implementation-Version>
-        <vaadin.version>14.9.2</vaadin.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <Implementation-Title>${project.name}</Implementation-Title>
-        <Implementation-Vendor>Run Uilder</Implementation-Vendor>
-        <Vaadin-License-Title>Apache License 2.0</Vaadin-License-Title>
-        <Vaadin-Addon>${project.artifactId}-${project.version}.jar</Vaadin-Addon>
+
+        <!-- ZIP Manifest fields -->
+        <vaadin.version>14.9.2</vaadin.version>
+        <vaadin.addon.name>${project.name}</vaadin.addon.name>
+        <vaadin.addon.jar>${project.build.finalName}.${project.packaging}</vaadin.addon.jar>
+        <vaadin.addon.version>${project.version}</vaadin.addon.version>
+        <vaadin.addon.owner>Run Uilder</vaadin.addon.owner>
+        <vaadin.addon.license>Apache License 2.0</vaadin.addon.license>
         <jetty.version>9.4.48.v20220622</jetty.version>
     </properties>
     <scm>
@@ -240,9 +241,12 @@
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
                         <manifestEntries>
-                            <!-- Package format version - do not change -->
+                            <!-- Package format version - do not change this -->
                             <Vaadin-Package-Version>1</Vaadin-Package-Version>
-                            <Vaadin-License-Title>${Vaadin-License-Title}</Vaadin-License-Title>
+                            <Implementation-Title>${vaadin.addon.name}</Implementation-Title>
+                            <Implementation-Vendor>${vaadin.addon.owner}</Implementation-Vendor>
+                            <Implementation-Version>${vaadin.addon.version}</Implementation-Version>
+                            <Vaadin-License-Title>${vaadin.addon.license}</Vaadin-License-Title>
                         </manifestEntries>
                     </archive>
                 </configuration>
@@ -272,25 +276,6 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <appendAssemblyId>false</appendAssemblyId>
-                    <descriptors>
-                        <descriptor>assembly/assembly.xml</descriptor>
-                    </descriptors>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <phase>install</phase>
                     </execution>
                 </executions>
             </plugin>

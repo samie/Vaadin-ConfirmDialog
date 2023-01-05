@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Vaadin-Package-Version: 1
+Vaadin-Addon: ${vaadin.addon.jar}
+Vaadin-License-Title: ${vaadin.addon.license}
+Implementation-Vendor: ${vaadin.addon.owner}
+Implementation-Title: ${vaadin.addon.name}
+Implementation-Version: ${vaadin.addon.version}
