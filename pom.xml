@@ -116,8 +116,8 @@
         <!-- If no goal is specified, we run local jetty -->
         <defaultGoal>jetty:run</defaultGoal>
 
-        <sourceDirectory>${basedir}/src</sourceDirectory>
-        <testSourceDirectory>${basedir}/test</testSourceDirectory>
+        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+        <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
 
         <pluginManagement>
             <plugins>
