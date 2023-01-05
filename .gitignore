@@ -5,3 +5,12 @@ target
 .DS_Store
 pom.xml.releaseBackup
 release.properties
+webpack.generated.js
+webpack.config.js
+types.d.ts
+tsconfig.json
+pnpmfile.js
+pnpm-lock.yaml
+package.json
+confirmdialog.iml
+error-screenshots

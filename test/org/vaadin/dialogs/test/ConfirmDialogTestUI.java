@@ -1,21 +1,20 @@
 package org.vaadin.dialogs.test;
 
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.Route;
 import org.vaadin.dialogs.ConfirmDialog;
-
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 import org.vaadin.dialogs.DefaultConfirmDialogFactory;
 
 import java.util.List;
 
-@SuppressWarnings("serial")
-public class ConfirmDialogTestUI extends UI {
+@Route("")
+public class ConfirmDialogTestUI extends VerticalLayout {
 
     public static final String OPEN_BUTTON_1_SHORT = "confirm_1";
     public static final String OPEN_BUTTON_2_LONG = "confirm_2";
@@ -23,6 +22,7 @@ public class ConfirmDialogTestUI extends UI {
     public static final String OPEN_BUTTON_4_NULL = "confirm_4";
     public static final String OPEN_BUTTON_5_3WAY = "confirm_5";
     public static final String OPEN_BUTTON_6_SWAP = "confirm_6";
+    public static final String OPEN_BUTTON_7_CUSTOM = "confirm_7";
 
     public static final String MESSAGE_1_SHORT = "This is the question?";
     public static final String MESSAGE_2_LONG = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at turpis lectus. Phasellus magna nulla, fringilla et dui id, gravida elementum ligula. Aliquam dignissim tincidunt efficitur. Sed tincidunt sapien ut vehicula vehicula. Quisque faucibus vestibulum sem at facilisis. Nullam eros urna, consequat id nibh sed, suscipit eleifend metus. Ut congue dolor id nulla ultricies aliquam. Ut a lacinia orci. Donec congue sapien risus, semper consequat tortor pulvinar at. Nullam scelerisque, nibh et pretium cursus, lacus dolor bibendum eros, non volutpat magna elit quis dolor. Mauris vel tortor nulla. Fusce dapibus semper fermentum. Curabitur ac sagittis risus. In hac habitasse platea dictumst. Vestibulum iaculis fermentum orci, ultricies sodales dolor eleifend sed. Nulla accumsan, erat euismod sagittis eleifend, ex purus rutrum mi, vel accumsan quam sapien id erat." +
@@ -34,106 +34,32 @@ public class ConfirmDialogTestUI extends UI {
     public static final String MESSAGE_4_NULL = null;
     private VerticalLayout root;
 
-    @Override
-    protected void init(VaadinRequest request) {
-        getPage().setTitle("Example and test application");
-        setContent(root = new VerticalLayout());
-        Label label = new Label("Hello Vaadin user");
-        addComponent(label);
+    public ConfirmDialogTestUI() {
+        UI.getCurrent().getPage().setTitle("Example and test application");
+        add(root = new VerticalLayout());
+        Span label = new Span("Hello Vaadin user");
+        add(label);
         addBasicExample();
         addLongExample();
         addHtmlExample();
         addNullMessageExample();
         addThreeWayExample();
         addButtonSwapExample();
+        addCustomButtonExample();
     }
 
+
     private void addComponent(Component c) {
-        root.addComponent(c);
+        root.add(c);
     }
 
     private void addBasicExample() {
         Button button = new Button("Click " + OPEN_BUTTON_1_SHORT);
         button.setId(OPEN_BUTTON_1_SHORT);
-        button.addClickListener(new Button.ClickListener() {
-            public void buttonClick(ClickEvent event) {
-                // The quickest way to confirm
-                ConfirmDialog.show(getUI(), MESSAGE_1_SHORT,
-                        new ConfirmDialog.Listener() {
-
-                            public void onClose(ConfirmDialog dialog) {
-                                if (dialog.isConfirmed()) {
-                                    Notification.show("Confirmed:"
-                                            + dialog.isConfirmed());
-                                } else {
-                                    Notification.show("Confirmed:"
-                                            + dialog.isConfirmed());
-                                }
-                            }
-                        });
-            }
-        });
-        addComponent(button);
-    }
-
-    private void addLongExample() {
-        Button button = new Button("Click " + OPEN_BUTTON_2_LONG);
-        button.setId(OPEN_BUTTON_2_LONG);
-        button.addClickListener(new Button.ClickListener() {
-            public void buttonClick(ClickEvent event) {
-                // The quickest way to confirm
-                ConfirmDialog.show(getUI(), MESSAGE_2_LONG,
-                        new ConfirmDialog.Listener() {
-
-                            public void onClose(ConfirmDialog dialog) {
-                                if (dialog.isConfirmed()) {
-                                    Notification.show("Confirmed:"
-                                            + dialog.isConfirmed());
-                                } else {
-                                    Notification.show("Confirmed:"
-                                            + dialog.isConfirmed());
-                                }
-                            }
-                        });
-            }
-        });
-        addComponent(button);
-    }
-
-    private void addHtmlExample() {
-        Button button = new Button("Click " + OPEN_BUTTON_3_HTML);
-        button.setId(OPEN_BUTTON_3_HTML);
-        button.addClickListener(new Button.ClickListener() {
-            public void buttonClick(ClickEvent event) {
-                // The quickest way to confirm
-                ConfirmDialog d = ConfirmDialog.show(getUI(), MESSAGE_3_HTML,
-                        new ConfirmDialog.Listener() {
-
-                            public void onClose(ConfirmDialog dialog) {
-                                if (dialog.isConfirmed()) {
-                                    Notification.show("Confirmed:"
-                                            + dialog.isConfirmed());
-                                } else {
-                                    Notification.show("Confirmed:"
-                                            + dialog.isConfirmed());
-                                }
-                            }
-                        });
-                d.setContentMode(ConfirmDialog.ContentMode.HTML);
-            }
-        });
-        addComponent(button);
-    }
-
-    private void addNullMessageExample() {
-        Button button = new Button("Click " + OPEN_BUTTON_4_NULL);
-        button.setId(OPEN_BUTTON_4_NULL);
-        button.addClickListener(new Button.ClickListener() {
-            public void buttonClick(ClickEvent event) {
-                // The quickest way to confirm
-                ConfirmDialog.show(getUI(), null, new ConfirmDialog.Listener() {
-
-                    public void onClose(ConfirmDialog dialog) {
+        button.addClickListener((e) -> {
+            // The quickest way to confirm
+            ConfirmDialog.show(UI.getCurrent(), MESSAGE_1_SHORT,
+                    (ConfirmDialog.Listener) dialog -> {
                         if (dialog.isConfirmed()) {
                             Notification.show("Confirmed:"
                                     + dialog.isConfirmed());
@@ -141,60 +67,137 @@ public class ConfirmDialogTestUI extends UI {
                             Notification.show("Confirmed:"
                                     + dialog.isConfirmed());
                         }
-                    }
-                });
-            }
+                    });
         });
-        addComponent(button);
+        add(button);
+    }
+
+    private void addLongExample() {
+        Button button = new Button("Click " + OPEN_BUTTON_2_LONG);
+        button.setId(OPEN_BUTTON_2_LONG);
+        button.addClickListener((e) -> {
+            // The quickest way to confirm
+            ConfirmDialog.show(UI.getCurrent(), MESSAGE_2_LONG,
+                    (ConfirmDialog.Listener) dialog -> {
+                        if (dialog.isConfirmed()) {
+                            Notification.show("Confirmed:"
+                                    + dialog.isConfirmed());
+                        } else {
+                            Notification.show("Confirmed:"
+                                    + dialog.isConfirmed());
+                        }
+                    });
+        });
+        add(button);
+    }
+
+    private void addHtmlExample() {
+        Button button = new Button("Click " + OPEN_BUTTON_3_HTML);
+        button.setId(OPEN_BUTTON_3_HTML);
+        button.addClickListener((e) -> {
+            // The quickest way to confirm
+            ConfirmDialog d = ConfirmDialog.show(UI.getCurrent(), MESSAGE_3_HTML,
+                    (ConfirmDialog.Listener) dialog -> {
+                        if (dialog.isConfirmed()) {
+                            Notification.show("Confirmed:"
+                                    + dialog.isConfirmed());
+                        } else {
+                            Notification.show("Confirmed:"
+                                    + dialog.isConfirmed());
+                        }
+                    });
+            d.setContentMode(ConfirmDialog.ContentMode.HTML);
+        });
+        add(button);
+    }
+
+    private void addNullMessageExample() {
+        Button button = new Button("Click " + OPEN_BUTTON_4_NULL);
+        button.setId(OPEN_BUTTON_4_NULL);
+        button.addClickListener((e) -> {
+            // The quickest way to confirm
+            ConfirmDialog.show(UI.getCurrent(), MESSAGE_4_NULL, (ConfirmDialog.Listener) dialog -> {
+                if (dialog.isConfirmed()) {
+                    Notification.show("Confirmed:"
+                            + dialog.isConfirmed());
+                } else {
+                    Notification.show("Confirmed:"
+                            + dialog.isConfirmed());
+                }
+            });
+        });
+        add(button);
     }
 
     private void addThreeWayExample() {
         Button button = new Button("Click " + OPEN_BUTTON_5_3WAY);
         button.setId(OPEN_BUTTON_5_3WAY);
-        button.addClickListener(new Button.ClickListener() {
-            public void buttonClick(ClickEvent event) {
-                // The quickest way to confirm
-                ConfirmDialog.show(getUI(), "Title", MESSAGE_1_SHORT, "ok", "cancel",
-                        "not ok", new ConfirmDialog.Listener() {
-
-                    public void onClose(ConfirmDialog dialog) {
-                            Notification.show("Confirmed:"
-                                    + dialog.isConfirmed()+" Canceled:"+dialog.isCanceled());
-                    }
-                });
-            }
+        button.addClickListener((e) -> {
+            // The quickest way to confirm
+            ConfirmDialog.show(UI.getCurrent(), "Title", MESSAGE_1_SHORT, "ok", "cancel",
+                    "not ok", (ConfirmDialog.Listener) dialog -> Notification.show("Confirmed:"
+                            + dialog.isConfirmed()+" Canceled:"+dialog.isCanceled()));
         });
-        addComponent(button);
+        add(button);
     }
 
     private void addButtonSwapExample() {
         Button button = new Button("Click " + OPEN_BUTTON_6_SWAP);
         button.setId(OPEN_BUTTON_6_SWAP);
-        button.addClickListener(new Button.ClickListener() {
-            public void buttonClick(ClickEvent event) {
+        button.addClickListener((e) -> {
+            ConfirmDialog.Factory currentFactory = ConfirmDialog.getFactory();
+            ConfirmDialog.setFactory(new DefaultConfirmDialogFactory() {
 
-                ConfirmDialog.Factory currentFactory = ConfirmDialog.getFactory();
-                ConfirmDialog.setFactory(new DefaultConfirmDialogFactory() {
+                @Override
+                protected List<Button> orderButtons(Button cancel, Button notOk, Button ok) {
+                    return super.orderButtons(cancel, ok, notOk);
+                }
+            });
 
-                    @Override
-                    protected List<Button> orderButtons(Button cancel, Button notOk, Button ok) {
-                        return super.orderButtons(cancel, ok, notOk);
-                    }
-                });
+            // The quickest way to confirm
+            ConfirmDialog.show(UI.getCurrent(), "Title", MESSAGE_1_SHORT, "ok", "cancel",
+                    "not ok", (ConfirmDialog.Listener) dialog -> Notification.show("Confirmed:"
+                            + dialog.isConfirmed()+" Canceled:"+dialog.isCanceled()));
 
-                // The quickest way to confirm
-                ConfirmDialog.show(getUI(), "Title", MESSAGE_1_SHORT, "ok", "cancel",
-                        "not ok", new ConfirmDialog.Listener() {
-
-                            public void onClose(ConfirmDialog dialog) {
-                                Notification.show("Confirmed:"
-                                        + dialog.isConfirmed()+" Canceled:"+dialog.isCanceled());
-                            }
-                        });
-
-                ConfirmDialog.setFactory(currentFactory);
-            }
+            // Restore the factory
+            ConfirmDialog.setFactory(currentFactory);
         });
-        addComponent(button);
+
+
+        add(button);
     }
+
+    private void addCustomButtonExample() {
+        Button button = new Button("Click " + OPEN_BUTTON_7_CUSTOM);
+        button.setId(OPEN_BUTTON_7_CUSTOM);
+        button.addClickListener((e) -> {
+                    ConfirmDialog.Factory currentFactory = ConfirmDialog.getFactory();
+                    ConfirmDialog.setFactory(new DefaultConfirmDialogFactory() {
+
+                        @Override
+                        protected Button buildCancelButton(String cancelCaption) {
+                            Button b = super.buildCancelButton(cancelCaption);
+                            b.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+                            return b;
+                        }
+
+                        @Override
+                        protected Button buildNotOkButton(String notOkCaption) {
+                            Button b = super.buildNotOkButton(notOkCaption);
+                            b.addThemeVariants(ButtonVariant.LUMO_ERROR);
+                            return b;
+                        }
+                    });
+                    ConfirmDialog.show(UI.getCurrent(), "Deleting file", "Delete 'file.txt'?", "Keep", "Cancel",
+                            "Delete", (ConfirmDialog.Listener) dialog -> Notification.show("Delete:"
+                                    + (!dialog.isConfirmed() && !dialog.isCanceled())));
+
+
+            // Restore the factory
+            ConfirmDialog.setFactory(currentFactory);
+
+        });
+        add(button);
+    }
+
 }

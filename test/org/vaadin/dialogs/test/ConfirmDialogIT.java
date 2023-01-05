@@ -1,75 +1,25 @@
-package org.vaadin.dialogs;
+package org.vaadin.dialogs.test;
 
-import com.machinepublishers.jbrowserdriver.JBrowserDriver;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import com.vaadin.flow.component.button.testbench.ButtonElement;
+import com.vaadin.flow.component.dialog.testbench.DialogElement;
+import com.vaadin.flow.component.html.testbench.DivElement;
+import com.vaadin.flow.component.html.testbench.LabelElement;
+import com.vaadin.flow.component.notification.testbench.NotificationElement;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.vaadin.dialogs.test.ConfirmDialogTestUI;
+import org.vaadin.dialogs.ConfirmDialog;
 
-import com.vaadin.testbench.TestBench;
-import com.vaadin.testbench.TestBenchTestCase;
-import com.vaadin.testbench.elements.ButtonElement;
-import com.vaadin.testbench.elements.LabelElement;
-import com.vaadin.testbench.elements.WindowElement;
-import org.eclipse.jetty.server.Server;
-import org.vaadin.addonhelpers.TServer;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertTrue;
+import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
  * WebDriver tests against the demo/example app.
  */
-public class ConfirmDialogIT extends TestBenchTestCase {
-
-    // host and port configuration for the URL
-    private static int PORT = 8889;
-    private static String URL = "http://localhost:" + PORT + "/" + ConfirmDialogTestUI.class.getName();
-
-    private static WebDriver commonDriver;
-    private static Server server;
-
-    @BeforeClass
-    public static void beforeAllTests() throws Exception {
-        // Start the server
-        server = new TServer().startServer(PORT);
-
-        // Create a single webdriver
-        commonDriver = TestBench.createDriver(new ChromeDriver());
-        commonDriver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-    }
-
-    @AfterClass
-    public static void afterAllTests() throws Exception {
-        // Stop the browser
-        if (commonDriver != null) {
-            commonDriver.quit();
-        }
-
-        // Stop the server
-        server.stop();
-    }
-
-    @Before
-    public void beforeTest() {
-        if (getDriver() == null) {
-            setDriver(commonDriver);
-        }
-
-        // Reload to make sure we have a clean start
-        reloadPage();
-    }
+public class ConfirmDialogIT extends AbstractViewTest {
 
     /**
      * Opens dialog and presses cancel and true.
@@ -80,15 +30,14 @@ public class ConfirmDialogIT extends TestBenchTestCase {
         clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1_SHORT);
 
         // Get the dialog
-        WindowElement dialog = findConfirmDialog();
+        DialogElement dialog = findConfirmDialog();
 
         // Assert message content in dialog
-        String text = $(LabelElement.class).context(dialog)
-                .id(ConfirmDialog.MESSAGE_ID).getText();
+        String text = $(DivElement.class).id(ConfirmDialog.MESSAGE_ID).getText();
         assertTrue(text.equals(ConfirmDialogTestUI.MESSAGE_1_SHORT));
 
         // Click the cancel button in dialog
-        clickButton(ConfirmDialog.CANCEL_ID, dialog);
+        clickButton(ConfirmDialog.CANCEL_ID);
 
     }
 
@@ -102,15 +51,14 @@ public class ConfirmDialogIT extends TestBenchTestCase {
         clickButton(ConfirmDialogTestUI.OPEN_BUTTON_4_NULL);
 
         // Get the dialog
-        WindowElement dialog = findConfirmDialog();
+        DialogElement dialog = findConfirmDialog();
 
         // Assert message content in dialog
-        String text = $(LabelElement.class).context(dialog)
-                .id(ConfirmDialog.MESSAGE_ID).getText();
+        String text = $(DivElement.class).id(ConfirmDialog.MESSAGE_ID).getText();
         assertTrue(text.equals(""));
 
         // Click the cancel button
-        clickButton(ConfirmDialog.CANCEL_ID, dialog);
+        clickButton(ConfirmDialog.CANCEL_ID);
     }
 
     /**
@@ -123,10 +71,10 @@ public class ConfirmDialogIT extends TestBenchTestCase {
         clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1_SHORT);
 
         // Get the dialog
-        WindowElement dialog = findConfirmDialog();
+        DialogElement dialog = findConfirmDialog();
 
         // Click the cancel button
-        clickButton(ConfirmDialog.OK_ID, dialog);
+        clickButton(ConfirmDialog.OK_ID);
 
         // Assert notification value
         assertTrue(findNotification().getText().contains("true"));
@@ -141,6 +89,10 @@ public class ConfirmDialogIT extends TestBenchTestCase {
 
         // Open confirm dialog
         clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1_SHORT);
+
+
+        // Get the dialog
+        DialogElement dialog = findConfirmDialog();
 
         // Press enter key
         getDriver().switchTo().activeElement().sendKeys(Keys.ENTER);
@@ -158,6 +110,9 @@ public class ConfirmDialogIT extends TestBenchTestCase {
 
         // Open confirm dialog
         clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1_SHORT);
+
+        // Get the dialog
+        DialogElement dialog = findConfirmDialog();
 
         // Press escape key
         getDriver().switchTo().activeElement().sendKeys(Keys.ESCAPE);
@@ -177,10 +132,10 @@ public class ConfirmDialogIT extends TestBenchTestCase {
         clickButton(ConfirmDialogTestUI.OPEN_BUTTON_1_SHORT);
 
         // Get the dialog
-        WindowElement dialog = findConfirmDialog();
+        DialogElement dialog = findConfirmDialog();
 
         // Click the cancel button
-        clickButton(ConfirmDialog.CANCEL_ID, dialog);
+        clickButton(ConfirmDialog.CANCEL_ID);
 
         // Assert notification value
         assertTrue(findNotification().getText().contains("false"));
@@ -199,10 +154,10 @@ public class ConfirmDialogIT extends TestBenchTestCase {
         clickButton(ConfirmDialogTestUI.OPEN_BUTTON_5_3WAY);
 
         // Get the dialog
-        WindowElement dialog = findConfirmDialog();
+        DialogElement dialog = findConfirmDialog();
 
         // Click the ok button
-        clickButton(ConfirmDialog.OK_ID, dialog);
+        clickButton(ConfirmDialog.OK_ID);
 
         // Assert notification value
         assertTrue(findNotification().getText().contains("Confirmed:true"));
@@ -219,10 +174,10 @@ public class ConfirmDialogIT extends TestBenchTestCase {
         clickButton(ConfirmDialogTestUI.OPEN_BUTTON_5_3WAY);
 
         // Get the dialog
-        WindowElement dialog = findConfirmDialog();
+        DialogElement dialog = findConfirmDialog();
 
         // Click the cancel button
-        clickButton(ConfirmDialog.CANCEL_ID, dialog);
+        clickButton(ConfirmDialog.CANCEL_ID);
 
         // Assert notification value
         assertTrue(findNotification().getText().contains("Confirmed:false"));
@@ -239,18 +194,14 @@ public class ConfirmDialogIT extends TestBenchTestCase {
         clickButton(ConfirmDialogTestUI.OPEN_BUTTON_5_3WAY);
 
         // Get the dialog
-        WindowElement dialog = findConfirmDialog();
+        DialogElement dialog = findConfirmDialog();
 
         // Click the not_ok button
-        clickButton(ConfirmDialog.NOT_OK_ID, dialog);
+        clickButton(ConfirmDialog.NOT_OK_ID);
 
         // Assert notification value
         assertTrue(findNotification().getText().contains("Confirmed:false"));
         assertTrue(findNotification().getText().contains("Canceled:false"));
-    }
-
-    private void clickButton(String id, WebElement inContext) {
-        $(ButtonElement.class).context(inContext).id(id).click();
     }
 
     private void clickButton(String id) {
@@ -262,8 +213,10 @@ public class ConfirmDialogIT extends TestBenchTestCase {
      *
      * @return WindowElement for the dialog
      */
-    private WindowElement findConfirmDialog() {
-        return $(WindowElement.class).id(ConfirmDialog.DIALOG_ID);
+    private DialogElement findConfirmDialog() {
+        DialogElement d = $(DialogElement.class).id(ConfirmDialog.DIALOG_ID);
+        assertNotNull("Could not find the dialog",d);
+        return d;
     }
 
     /**
@@ -271,36 +224,9 @@ public class ConfirmDialogIT extends TestBenchTestCase {
      *
      * @return
      */
-    private WebElement findNotification() {
-        List<WebElement> n = getDriver().findElements(
-                By.className("v-Notification"));
-        if (n.size() >0 ) {
-            WebElement last = n.get(n.size() - 1);
-            return last;            
-        } else {
-            return null;
-        }
-        
+    private NotificationElement findNotification() {
+        NotificationElement n = $(NotificationElement.class).first();
+        assertNotNull("Could not find the notification",n);
+        return n;
     }
-
-    /**
-     * Reloads the page. Depending on UI configuration this might re-init the UI
-     * or keep the state.
-     *
-     * @see #restartApplication()
-     */
-    protected void reloadPage() {
-
-        getDriver().get(URL);
-    }
-
-    /**
-     * Restarts the Vaadin application using ?restartApplication parameter.
-     *
-     * @see #reloadPage()
-     */
-    protected void restartApplication() {
-        getDriver().get(URL + "?restartApplication");
-    }
-
 }

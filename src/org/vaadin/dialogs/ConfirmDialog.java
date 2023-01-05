@@ -2,13 +2,13 @@ package org.vaadin.dialogs;
 
 import java.io.Serializable;
 
-import com.vaadin.server.JsonPaintTarget;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.Window;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.Div;
+import org.apache.commons.lang3.StringEscapeUtils;
 
-public class ConfirmDialog extends Window {
+public class ConfirmDialog extends Dialog {
 
     private static final long serialVersionUID = -2363125714643244070L;
 
@@ -188,6 +188,7 @@ public class ConfirmDialog extends Window {
 
     private Listener confirmListener = null;
     private Boolean isConfirmed = null;
+    private Label captionLabel = null;
     private Label messageLabel = null;
     private Button okBtn = null;
     private Button notOkBtn = null;
@@ -205,9 +206,8 @@ public class ConfirmDialog extends Window {
     public final void show(final UI ui, final Listener listener,
             final boolean modal) {
         confirmListener = listener;
-        center();
         setModal(modal);
-        ui.addWindow(this);
+        this.open();;
     }
 
     /**
@@ -256,14 +256,21 @@ public class ConfirmDialog extends Window {
         return cancelBtn;
     }
 
+    protected final void setCaptionLabel(final Label caption) {
+        captionLabel = caption;
+    }
+
     protected final void setMessageLabel(final Label message) {
         messageLabel = message;
     }
 
+    public void setCaption(String s) {
+        captionLabel.setText(s);
+    }
+
     public final void setMessage(final String message) {
         originalMessageText = message;
-        messageLabel
-                .setValue(ContentMode.TEXT_WITH_NEWLINES == msgContentMode ? formatDialogMessage(message)
+        messageLabel.setInnerHtml(ContentMode.TEXT_WITH_NEWLINES == msgContentMode ? formatDialogMessage(message)
                         : message);
     }
 
@@ -277,24 +284,20 @@ public class ConfirmDialog extends Window {
 
     public final void setContentMode(final ContentMode contentMode) {
         msgContentMode = contentMode;
-        com.vaadin.shared.ui.ContentMode labelContentMode = com.vaadin.shared.ui.ContentMode.TEXT;
         switch (contentMode) {
         case TEXT_WITH_NEWLINES:
+            messageLabel.setInnerHtml(formatDialogMessage(originalMessageText));
+            break;
         case TEXT:
-            labelContentMode = com.vaadin.shared.ui.ContentMode.TEXT;
+            messageLabel.setInnerText(originalMessageText);
             break;
         case PREFORMATTED:
-            labelContentMode = com.vaadin.shared.ui.ContentMode.PREFORMATTED;
+            messageLabel.setInnerHtml("<pre>"+originalMessageText+"</pre>");
             break;
         case HTML:
-            labelContentMode = com.vaadin.shared.ui.ContentMode.HTML;
+            messageLabel.setInnerHtml(originalMessageText);
             break;
         }
-        messageLabel
-                .setContentMode(labelContentMode);
-        messageLabel
-                .setValue(contentMode == ContentMode.TEXT_WITH_NEWLINES ? formatDialogMessage(originalMessageText)
-                        : originalMessageText);
     }
 
     /**
@@ -304,7 +307,7 @@ public class ConfirmDialog extends Window {
      * @return formatted text
      */
     protected final String formatDialogMessage(final String text) {
-        return JsonPaintTarget.escapeXML(text).replaceAll("\n", "<br />");
+        return StringEscapeUtils.escapeXml(text).replaceAll("\n", "<br />");
     }
 
     /**
@@ -316,5 +319,18 @@ public class ConfirmDialog extends Window {
      */
     protected final void setConfirmed(final boolean confirmed) {
         isConfirmed = confirmed;
+    }
+
+    public static class Label extends Div {
+
+        public Label(String text) {
+        }
+
+        public void setInnerHtml(String html) {
+            getElement().setProperty("innerHTML", html);
+        }
+        public void setInnerText(String text) {
+            getElement().setProperty("innerText", text);
+        }
     }
 }
