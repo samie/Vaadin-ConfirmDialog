@@ -13,29 +13,21 @@ This is a server-side-only component, so no need to recompile the widgetset.
 == Usage of the add-on ==
 
 {{{
+Button button = new Button("Unsafe action", e -> {
 
-private void addBasicExample() {
-	Button button = new Button("Basic");
-	button.setDebugId("basic");
-	button.addListener(new Button.ClickListener() {
-		public void buttonClick(ClickEvent event) {
-			// The quickest way to confirm
-			ConfirmDialog.show(getMainWindow(), "Are you sure?",
-			        new ConfirmDialog.Listener() {
-
-			            public void onClose(ConfirmDialog dialog) {
-			                if (dialog.isConfirmed()) {
-			                    // Confirmed to continue
-								// DO STUFF
-			                } else {
-			                    // User did not confirm
-								// CANCEL STUFF
-			                }
-			            }
-			        });
-		}
-	});
-
+    // The quickest way to confirm
+    ConfirmDialog.show(UI.getCurrent(), "Are you sure?",
+            (ConfirmDialog.Listener) dialog -> {
+                if (dialog.isConfirmed()) {
+                    // Confirmed to continue
+                    // DO STUFF
+                } else {
+                    // User did not confirm
+                    // CANCEL STUFF
+                }
+            });
+});
+add(button);
 }}}
 
 
