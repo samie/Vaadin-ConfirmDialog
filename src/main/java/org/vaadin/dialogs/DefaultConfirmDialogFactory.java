@@ -266,8 +266,7 @@ public class DefaultConfirmDialogFactory implements Factory {
             rows += message != null ? count("\n", message) : 0;
             rows += message != null ? count("</p>", message) : 0;
         }
-
-        System.out.println("ROWS: "+rows);
+        
             // Obey maximum size
         double width = Math.min(maxWidth, length);
         double height = Math.ceil(Math.min(MAX_HEIGHT, rows * chrH));
