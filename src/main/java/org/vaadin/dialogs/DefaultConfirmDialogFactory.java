@@ -36,11 +36,14 @@ public class DefaultConfirmDialogFactory implements Factory {
     protected static final String DEFAULT_OK_CAPTION = "Ok";
     protected static final String DEFAULT_CANCEL_CAPTION = "Cancel";
 
-    // System wide defaults
-    private static final double MIN_WIDTH = 25d;
-    private static final double MAX_WIDTH = 45d;
-    private static final double MIN_HEIGHT = 1d;
-    private static final double MAX_HEIGHT = 35d;
+    // System-wide defaults of text space
+    private static final double MIN_WIDTH = 28d; // ch
+    private static final double MAX_WIDTH_LONG = 80d; // ch
+    private static final double MAX_WIDTH_SHORT = 40d; // ch
+    private static final double MIN_HEIGHT = 1d; // em
+    private static final double MAX_HEIGHT = 40d; // em
+    private static final int LONG_MESSAGE_LIMIT = (int) Math.ceil(MAX_WIDTH_SHORT * 5);
+
 
     public ConfirmDialog create(final String caption, final String message,
             final String okCaption, final String cancelCaption,
@@ -167,10 +170,9 @@ public class DefaultConfirmDialogFactory implements Factory {
         }
 
         // Approximate the size of the dialog
-        double[] dim = getDialogDimensions(message,
-
+        double[] dim = getDialogDimensions(caption, message,
                 ConfirmDialog.ContentMode.TEXT_WITH_NEWLINES);
-        confirm.setWidth(format(dim[0]) + "em");
+        confirm.setWidth(format(dim[0]) + "ch");
         confirm.setHeight(format(dim[1]) + "em");
         confirm.setResizable(false);
 
@@ -248,14 +250,16 @@ public class DefaultConfirmDialogFactory implements Factory {
      *            the content mode
      * @return approximate size for the dialog with given message
      */
-    protected double[] getDialogDimensions(String message,
+    protected double[] getDialogDimensions(String title, String message,
             ConfirmDialog.ContentMode style) {
 
-        // Based on Lumo style:
-        double chrW = 0.51d;
-        double chrH = 1.41d;
+        double maxWidth = message != null && message.length() > LONG_MESSAGE_LIMIT ? MAX_WIDTH_LONG :MAX_WIDTH_SHORT;
+
+        // We use 'ch' and 'em':
+        double chrW = 1;
+        double chrH = 1.6;
         double length = message != null ? chrW * message.length() : 0;
-        double rows = Math.ceil(length / MAX_WIDTH);
+        double rows = Math.ceil(length / (maxWidth*1.40)); // line fits safely 40% more that ch says
 
         // Estimate extra lines
         if (style == ConfirmDialog.ContentMode.TEXT_WITH_NEWLINES) {
@@ -263,18 +267,22 @@ public class DefaultConfirmDialogFactory implements Factory {
             rows += message != null ? count("</p>", message) : 0;
         }
 
+        System.out.println("ROWS: "+rows);
             // Obey maximum size
-        double width = Math.min(MAX_WIDTH, length);
+        double width = Math.min(maxWidth, length);
         double height = Math.ceil(Math.min(MAX_HEIGHT, rows * chrH));
 
         // Obey the minimum size
         width = Math.max(width, MIN_WIDTH);
         height = Math.max(height, MIN_HEIGHT);
 
+        // Handle title
+        height += title != null && !title.isEmpty()? 2 : 0;
+
         // Based on Lumo style:
-        double btnHeight = 5d;
-        double vmargin = 5d;
-        double hmargin = 1d;
+        double btnHeight = 5d; // em
+        double vmargin = 3d; // em
+        double hmargin = 4d; // ch
 
         double[] res = new double[] { width + hmargin,
                 height + btnHeight + vmargin };
